@@ -51,6 +51,9 @@ $duty_logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <p><strong>Student ID:</strong> <?php echo htmlspecialchars($student['student_id'] ?? 'N/A'); ?></p>
             <p><strong>Scholarship Type:</strong> <?php echo htmlspecialchars($student['scholarship_type'] ?? 'N/A'); ?>
             </p>
+            <p><strong>Course:</strong> <?php echo htmlspecialchars($student['course'] ?? 'N/A'); ?></p>
+            <p><strong>Department:</strong> <?php echo htmlspecialchars($student['department'] ?? 'N/A'); ?></p>
+            <p><strong>HK Duty Status:</strong> <?php echo htmlspecialchars($student['hk_duty_status'] ?? 'N/A'); ?></p>
         </section>
 
         <section class="duty-logs">
