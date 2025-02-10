@@ -20,6 +20,18 @@ if (isset($_SESSION['student_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page - Duty Tracker</title>
     <link rel="stylesheet" href="assets/style.css">
+    <link
+    href="https://fonts.googleapis.com/css2?
+        family=Anek+Devanagari:wght@100..800&
+        family=Jost:ital,wght@0,100..900;1,100..900&
+        family=Roboto:ital,wght@0,100..900;1,100..900&
+        family=Bebas+Neue&
+        family=Poppins:ital, wght@0,100..900;1,100..900&
+        family=Quicksand:wght@300..700&
+        family=Varela+Round&
+        display=swap"
+        rel="stylesheet"
+    />
 </head>
 
 <body>
