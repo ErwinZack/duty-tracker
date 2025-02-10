@@ -69,6 +69,9 @@ $pending_logs = $pending_logs_data['pending_logs'] ?: 0;
             <p><strong>Name:</strong> <?php echo $student['name']; ?></p>
             <p><strong>Student ID:</strong> <?php echo $student['student_id']; ?></p>
             <p><strong>Scholarship Type:</strong> <?php echo $student['scholarship_type']; ?></p>
+            <p><strong>Course:</strong> <?php echo $student['course']; ?></p> <!-- New Field -->
+            <p><strong>Department:</strong> <?php echo $student['department']; ?></p> <!-- New Field -->
+            <p><strong>HK Duty Status:</strong> <?php echo $student['hk_duty_status']; ?></p> <!-- New Field -->
         </div>
 
         <div class="card">
