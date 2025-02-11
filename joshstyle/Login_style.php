@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($student && password_verify($password, $student['password'])) {
             $_SESSION['student_id'] = trim($student['student_id']); // Store correctly formatted student ID
             $_SESSION['name'] = $student['name'];
-            header("Location: dashboard.php");
+            echo "successfully login";
             exit();
         } else {
             $error = "Invalid Student ID or Password.";

@@ -15,13 +15,17 @@ CREATE TABLE admin (
 -- Student Table
 CREATE TABLE students (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id VARCHAR(20) UNIQUE NOT NULL,
+    student_id VARCHAR(20) UNIQUE NOT NULL,  -- Unique Student ID
     name VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,  -- Hashed password
     scholarship_type VARCHAR(100),
+    course VARCHAR(100) NOT NULL,  -- Student course
+    department VARCHAR(100) NOT NULL,  -- Student department
+    hk_duty_status VARCHAR(100) NOT NULL,  -- Custom duty status set from frontend
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 -- Duty Logs Table
 CREATE TABLE duty_logs (

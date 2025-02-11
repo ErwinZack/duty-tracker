@@ -1,5 +1,6 @@
 <?php
 session_start();
+session_regenerate_id(true); 
 require_once '../config/database.php';
 require_once '../config/session.php';
 
@@ -10,12 +11,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['email'])) {
         $student_id = trim($_POST['student_id']);
         $name = trim($_POST['name']);
-        $scholarship_type = trim($_POST['scholarship_type']);
         $email = trim($_POST['email']);
         $password = trim($_POST['password']);
         $confirm_password = trim($_POST['confirm_password']);
 
-        if (!empty($student_id) && !empty($name) && !empty($scholarship_type) && !empty($email) && !empty($password) && !empty($confirm_password)) {
+        if (!empty($student_id) && !empty($name) && !empty($email) && !empty($password) && !empty($confirm_password)) {
             if ($password === $confirm_password) {
                 $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt = $pdo->prepare("INSERT INTO students (student_id, name, scholarship_type, email, password) VALUES (?, ?, ?, ?, ?)");
                     if ($stmt->execute([$student_id, $name, $scholarship_type, $email, $hashed_password])) {
                         $_SESSION['student_id'] = $student_id; // Store student_id for the next step
-                        header("Location: hk_reg.php"); // Redirect to the next step
+                        header("Location: hk_reg.php"); 
                         exit();
                     } else {
                         $error = "Error occurred during registration.";
@@ -43,7 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,8 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <label for="student_id">Student ID:</label>
       <input type="text" name="student_id" placeholder="Enter Student ID" required>
 
-      <label for="full_name">Full Name:</label>
-      <input type="text" name="full_name" placeholder="Enter Fullname" required>
+      <label for="name">Full Name:</label>
+      <input type="text" name="name" placeholder="Enter Fullname" required>
 
       <label for="email">Email:</label>
       <input type="email" name="email" placeholder="Enter Email" required>
