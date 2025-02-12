@@ -14,13 +14,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $scholarship_type = trim($_POST['scholarship_type']);
         $course = trim($_POST['course']);
         $department = trim($_POST['department']);
+        $year_level = trim($_POST['year_level']); // Added Year Level
         $hk_duty_status = trim($_POST['hk_duty_status']);
         $email = trim($_POST['email']);
         $password = trim($_POST['password']);
         $confirm_password = trim($_POST['confirm_password']);
 
         if (!empty($student_id) && !empty($name) && !empty($scholarship_type) && !empty($course) &&
-            !empty($department) && !empty($hk_duty_status) && !empty($email) &&
+            !empty($department) && !empty($year_level) && !empty($hk_duty_status) && !empty($email) &&
             !empty($password) && !empty($confirm_password)) {
 
             if ($password === $confirm_password) {
@@ -32,9 +33,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if ($stmt->rowCount() == 0) {
                     // Insert the student data
-                    $stmt = $pdo->prepare("INSERT INTO students (student_id, name, scholarship_type, course, department, hk_duty_status, email, password) 
-                                           VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-                    if ($stmt->execute([$student_id, $name, $scholarship_type, $course, $department, $hk_duty_status, $email, $hashed_password])) {
+                    $stmt = $pdo->prepare("INSERT INTO students (student_id, name, scholarship_type, course, department, year_level, hk_duty_status, email, password) 
+                                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    if ($stmt->execute([$student_id, $name, $scholarship_type, $course, $department, $year_level, $hk_duty_status, $email, $hashed_password])) {
                         $success = "Registration successful! You can now <a href='login.php'>login</a>.";
                     } else {
                         $error = "Error occurred during registration.";
@@ -59,28 +60,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration</title>
-    <link rel="stylesheet" href="../assets/student.css">
+    <link rel="stylesheet" href="../assets/register.css">
 </head>
 
 <body>
 
     <div class="container">
-        <div class="form-container">
-            <h2>Student Registration</h2>
+        <div class="left">
+            <img src="../assets/image/Rectangle bg.png" alt="Registration Banner">
+        </div>
+        <div class="right">
+            <h2 class="reg_signup">Student Registration</h2>
+
             <?php if ($error): ?>
             <p class="error"><?php echo $error; ?></p>
             <?php elseif ($success): ?>
             <p class="success"><?php echo $success; ?></p>
             <?php endif; ?>
+
             <form action="" method="POST">
                 <label for="student_id">Student ID:</label>
-                <input type="text" name="student_id" required>
+                <input type="text" name="student_id" required placeholder="Enter Student ID">
 
                 <label for="name">Full Name:</label>
-                <input type="text" name="name" required>
+                <input type="text" name="name" required placeholder="Enter Full Name">
 
                 <label for="scholarship_type">Scholarship Type:</label>
-                <input type="text" name="scholarship_type" required>
+                <select name="scholarship_type" required>
+                    <option value="HK 25">HK 25</option>
+                    <option value="HK 50">HK 50</option>
+                    <option value="HK 75">HK 75</option>
+                </select>
 
                 <label for="course">Course:</label>
                 <select name="course" required>
@@ -89,15 +99,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="BSCS">BS Computer Science</option>
                     <option value="BSE">BS Education</option>
                     <option value="BBA">BS Business Administration</option>
+                    <option value="BSCRIM">BS Criminology</option>
+                    <option value="BSA">BS Accountancy</option>
+                    <option value="BSN">BS Nursing</option>
+                    <option value="BSARCH">BS Architecture</option>
+                    <option value="BSCOE">BS Computer Engineering</option>
+                    <option value="BSEE">BS Electrical Engineering</option>
+                    <option value="BSME">BS Mechanical Engineering</option>
+                    <option value="BSCE">BS Civil Engineering</option>
+                    <option value="BSP">BS Psychology</option>
                 </select>
 
                 <label for="department">Department:</label>
                 <select name="department" required>
                     <option value="" disabled selected>Select Department</option>
-                    <option value="IT">Information Technology</option>
-                    <option value="CS">Computer Science</option>
-                    <option value="Education">Education</option>
-                    <option value="Business">Business</option>
+                    <option value="CEA">CEA</option>
+                    <option value="CMA">CMA</option>
+                    <option value="CAHS">CAHS</option>
+                    <option value="CITE">CITE</option>
+                    <option value="CCJE">CCJE</option>
+                    <option value="CELA">CELA</option>
+                </select>
+
+                <label for="year_level">Year Level:</label>
+                <select name="year_level" required>
+                    <option value="" disabled selected>Select Year Level</option>
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
+                    <option value="5th Year">5th Year</option>
                 </select>
 
                 <label for="hk_duty_status">HK Duty Status:</label>
@@ -106,22 +137,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="Module Distributor">Module Distributor</option>
                     <option value="Student Facilitator">Student Facilitator</option>
                     <option value="Library Assistant">Library Assistant</option>
-                    <option value="Admin Assistant">Admin Assistant</option>
+                    <option value="Admin Assistant">External Facilitator</option>
                 </select>
 
                 <label for="email">Email:</label>
-                <input type="email" name="email" required>
+                <input type="email" name="email" required placeholder="Enter Email">
 
                 <label for="password">Password:</label>
-                <input type="password" name="password" required>
+                <input type="password" name="password" required placeholder="Enter Password">
 
                 <label for="confirm_password">Confirm Password:</label>
-                <input type="password" name="confirm_password" required>
+                <input type="password" name="confirm_password" required placeholder="Confirm Password">
 
-                <button type="submit">Register</button>
+                <button type="submit" class="btn">Register</button>
             </form>
 
-            <p class="links">Already have an account? <a href="login.php">Login here</a></p>
+            <p class="account_login">Already have an account? <a href="login.php">Login here</a></p>
         </div>
     </div>
 
