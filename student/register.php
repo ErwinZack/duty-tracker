@@ -60,30 +60,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration</title>
-    <link rel="stylesheet" href="../assets/register.css">
+    <link rel="stylesheet" href="../assets/student.css">
 </head>
 
 <body>
 
     <div class="container">
-        <div class="left">
-            <img src="../assets/image/Rectangle bg.png" alt="Registration Banner">
-        </div>
-        <div class="right">
-            <h2 class="reg_signup">Student Registration</h2>
-
+        <div class="form-container">
+            <h2>Student Registration</h2>
             <?php if ($error): ?>
             <p class="error"><?php echo $error; ?></p>
             <?php elseif ($success): ?>
             <p class="success"><?php echo $success; ?></p>
             <?php endif; ?>
-
             <form action="" method="POST">
                 <label for="student_id">Student ID:</label>
-                <input type="text" name="student_id" required placeholder="Enter Student ID">
+                <input type="text" name="student_id" required>
 
                 <label for="name">Full Name:</label>
-                <input type="text" name="name" required placeholder="Enter Full Name">
+                <input type="text" name="name" required>
 
                 <label for="scholarship_type">Scholarship Type:</label>
                 <select name="scholarship_type" required>
@@ -101,6 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="BBA">BS Business Administration</option>
                     <option value="BSCRIM">BS Criminology</option>
                     <option value="BSA">BS Accountancy</option>
+                    <option value="BSE">BS Education</option>
                     <option value="BSN">BS Nursing</option>
                     <option value="BSARCH">BS Architecture</option>
                     <option value="BSCOE">BS Computer Engineering</option>
@@ -128,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="2nd Year">2nd Year</option>
                     <option value="3rd Year">3rd Year</option>
                     <option value="4th Year">4th Year</option>
-                    <option value="5th Year">5th Year</option>
+                    <option value="4th Year">5th Year</option>
                 </select>
 
                 <label for="hk_duty_status">HK Duty Status:</label>
@@ -141,18 +137,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
 
                 <label for="email">Email:</label>
-                <input type="email" name="email" required placeholder="Enter Email">
+                <input type="email" name="email" required>
 
                 <label for="password">Password:</label>
-                <input type="password" name="password" required placeholder="Enter Password">
+                <input type="password" name="password" required>
 
                 <label for="confirm_password">Confirm Password:</label>
-                <input type="password" name="confirm_password" required placeholder="Confirm Password">
+                <input type="password" name="confirm_password" required>
 
-                <button type="submit" class="btn">Register</button>
+                <button type="submit">Register</button>
             </form>
 
-            <p class="account_login">Already have an account? <a href="login.php">Login here</a></p>
+            <p class="links">Already have an account? <a href="login.php">Login here</a></p>
         </div>
     </div>
 
