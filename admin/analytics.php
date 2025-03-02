@@ -1,20 +1,29 @@
 <?php
 session_start();
-require_once('../config/database.php');
-require_once('../config/auth.php');
+require_once '../config/database.php';
 
 if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
     exit();
 }
 
-$auth = new Auth($pdo);
-
-// Query to fetch duty log data for analytics
-$query = "SELECT COUNT(*) as total_logs, SUM(hours) as total_hours, status FROM duty_logs GROUP BY status";
-$stmt = $pdo->prepare($query);
+// Fetch total number of students and duty logs
+$stmt = $pdo->prepare("SELECT COUNT(*) AS total_students FROM students");
 $stmt->execute();
-$analyticsData = $stmt->fetchAll();
+$total_students = $stmt->fetch(PDO::FETCH_ASSOC)['total_students'];
+
+$stmt = $pdo->prepare("SELECT COUNT(*) AS total_logs FROM duty_logs");
+$stmt->execute();
+$total_logs = $stmt->fetch(PDO::FETCH_ASSOC)['total_logs'];
+
+$stmt = $pdo->prepare("SELECT SUM(duration) AS total_hours FROM duty_logs WHERE status = 'Approved'");
+$stmt->execute();
+$total_hours = $stmt->fetch(PDO::FETCH_ASSOC)['total_hours'];
+
+$stmt = $pdo->prepare("SELECT student_id, COUNT(*) AS total_logs, SUM(duration) AS total_hours FROM duty_logs WHERE status = 'Approved' GROUP BY student_id");
+$stmt->execute();
+$log_details = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -23,39 +32,39 @@ $analyticsData = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Analytics</title>
-    <link rel="stylesheet" href="../assets/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Analytics Dashboard</title>
+    <link rel="stylesheet" href="../assets/admin.css">
 </head>
 
 <body>
-    <div class="container">
-        <h2>Analytics Dashboard</h2>
+    <div class="analytics-container">
+        <h2>Admin Analytics</h2>
 
-        <canvas id="analyticsChart"></canvas>
+        <div class="summary-stats">
+            <p>Total Students: <?php echo $total_students; ?></p>
+            <p>Total Duty Logs: <?php echo $total_logs; ?></p>
+            <p>Total Approved Hours: <?php echo $total_hours; ?> hours</p>
+        </div>
 
-        <script>
-        const ctx = document.getElementById('analyticsChart').getContext('2d');
-        const analyticsChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Approved', 'Rejected', 'Pending'],
-                datasets: [{
-                    label: 'Duty Log Status',
-                    data: [<?php echo $analyticsData[0]['status'] == 'approved' ? $analyticsData[0]['total_logs'] : 0; ?>,
-                        <?php echo $analyticsData[1]['status'] == 'rejected' ? $analyticsData[1]['total_logs'] : 0; ?>,
-                        <?php echo $analyticsData[2]['status'] == 'pending' ? $analyticsData[2]['total_logs'] : 0; ?>
-                    ],
-                    backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
-                    borderColor: ['#155724', '#721c24', '#856404'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
-        </script>
+        <h3>Duty Logs by Student</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Total Logs</th>
+                    <th>Total Hours</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($log_details as $log): ?>
+                <tr>
+                    <td><?php echo $log['student_id']; ?></td>
+                    <td><?php echo $log['total_logs']; ?></td>
+                    <td><?php echo $log['total_hours']; ?> hours</td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 </body>
 
