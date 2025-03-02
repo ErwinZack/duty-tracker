@@ -108,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['log_id'], $_POST['acti
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Approve Duty Logs</title>
-    <link rel="stylesheet" href="../assets/admin.css">
+    <link rel="stylesheet" href="">
 </head>
 
 <body>
@@ -149,9 +149,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['log_id'], $_POST['acti
                     <td><?php echo htmlspecialchars($log['student_id']); ?></td>
                     <td><?php echo date('Y-m-d', strtotime($log['duty_date'])); ?></td>
                     <td><?php echo date('h:i A', strtotime($log['time_in'])); ?></td>
-                    <td>
-                        <?php echo ($log['time_out']) ? date('h:i A', strtotime($log['time_out'])) : 'N/A'; ?>
-                    </td>
+                    <td><?php echo $log['time_out'] ? date('h:i A', strtotime($log['time_out'])) : 'N/A'; ?></td>
+
                     <td><?php echo number_format($log['hours_worked'], 2); ?> hrs</td>
                     <td><?php echo number_format($log['total_hours'], 2); ?> hrs</td>
                     <td><?php echo htmlspecialchars($log['status']); ?></td>
