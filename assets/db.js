@@ -199,3 +199,134 @@ const endDate = formatDate(new Date(today.setDate(today.getDate() + 7)));
 
 // Set input value
 document.getElementById("dateRange").value = `${startDate} - ${endDate}`;
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.getElementById("menu-toggle");
+    const sidebar = document.querySelector(".dashboard-container .sidebar");
+    const settingsButton = document.getElementById("settingsButton");
+    const settingsSidebar = document.getElementById("settingsSidebar");
+    const closeSettings = document.getElementById("closeSettings");
+    const lightModeBox = document.getElementById("lightModeBox");
+    const darkModeBox = document.getElementById("darkModeBox");
+    const body = document.body;
+
+    // Sidebar Toggle
+    menuToggle.addEventListener("click", function () {
+        sidebar.classList.toggle("collapsed");
+    });
+
+    // Open Settings Panel
+    settingsButton.addEventListener("click", function () {
+        settingsSidebar.classList.add("open");
+    });
+
+    // Close Settings Panel
+    closeSettings.addEventListener("click", function () {
+        settingsSidebar.classList.remove("open");
+    });
+
+    // Apply Dark Mode
+    function enableDarkMode() {
+        body.classList.add("dark-mode");
+        localStorage.setItem("theme", "dark-mode");
+    }
+
+    // Apply Light Mode
+    function disableDarkMode() {
+        body.classList.remove("dark-mode");
+        localStorage.setItem("theme", "light-mode");
+    }
+
+    // Check saved theme in LocalStorage
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark-mode") {
+        enableDarkMode();
+        darkModeBox.classList.add("active");
+        lightModeBox.classList.remove("active");
+    } else {
+        disableDarkMode();
+        lightModeBox.classList.add("active");
+        darkModeBox.classList.remove("active");
+    }
+
+    // Toggle Dark Mode
+    darkModeBox.addEventListener("click", function () {
+        enableDarkMode();
+        darkModeBox.classList.add("active");
+        lightModeBox.classList.remove("active");
+    });
+
+    // Toggle Light Mode
+    lightModeBox.addEventListener("click", function () {
+        disableDarkMode();
+        lightModeBox.classList.add("active");
+        darkModeBox.classList.remove("active");
+    });
+
+});
+document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.getElementById("menu-toggle");
+    const sidebar = document.getElementById("sidebar");
+    const settingsButton = document.getElementById("settingsButton");
+    const settingsSidebar = document.getElementById("settingsSidebar");
+    const closeSettings = document.getElementById("closeSettings");
+    const lightModeBox = document.getElementById("lightModeBox");
+    const darkModeBox = document.getElementById("darkModeBox");
+    const body = document.body;
+
+    // Sidebar Toggle
+    menuToggle?.addEventListener("click", function () {
+        sidebar.classList.toggle("collapsed");
+    });
+
+    // Open Settings Panel
+    settingsButton?.addEventListener("click", function () {
+        settingsSidebar.classList.add("open");
+    });
+
+    // Close Settings Panel
+    closeSettings?.addEventListener("click", function () {
+        settingsSidebar.classList.remove("open");
+    });
+
+    // Apply Dark Mode
+    function enableDarkMode() {
+        body.classList.add("dark-mode");
+        sidebar.classList.add("dark-mode");
+        localStorage.setItem("theme", "dark-mode");
+    }
+
+    // Apply Light Mode
+    function disableDarkMode() {
+        body.classList.remove("dark-mode");
+        sidebar.classList.remove("dark-mode");
+        localStorage.setItem("theme", "light-mode");
+    }
+
+    // Check saved theme in LocalStorage
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark-mode") {
+        enableDarkMode();
+        darkModeBox?.classList.add("active");
+        lightModeBox?.classList.remove("active");
+    } else {
+        disableDarkMode();
+        lightModeBox?.classList.add("active");
+        darkModeBox?.classList.remove("active");
+    }
+
+    // Toggle Dark Mode
+    darkModeBox?.addEventListener("click", function () {
+        enableDarkMode();
+        darkModeBox.classList.add("active");
+        lightModeBox.classList.remove("active");
+    });
+
+    // Toggle Light Mode
+    lightModeBox?.addEventListener("click", function () {
+        disableDarkMode();
+        lightModeBox.classList.add("active");
+        darkModeBox.classList.remove("active");
+    });
+});
