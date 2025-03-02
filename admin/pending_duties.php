@@ -32,22 +32,8 @@ $pending_duties = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <div class="dashboard-container">
-        <!-- Sidebar -->
-        <nav class="sidebar">
-            <div class="logo-container">
-                <img src="../assets/image/University_of_Pangasinan_logo.png" alt="Logo">
-                <h2>Hk Admin</h2>
-            </div>
-            <hr>
-            <ul>
-                <li><a href="dashboard.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                <li><a href="approve_duty.php"><i class="fa fa-check-square-o"></i> Approve Duty Logs</a></li>
-                <li><a href="student_profiles.php"><i class="fas fa-user"></i> Student Profiles</a></li>
-                <li><a href="add_student.php"><i class="fas fa-user-plus"></i> Add Student</a></li>
-                <li><a href="export_report.php"><i class="fas fa-file-export"></i> Export Reports</a></li>
-                <li><a href="logout.php" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-            </ul>
-        </nav>
+
+        <?php include '../admin/includes/sidebar.php'?>
 
         <!-- Main Content -->
         <main class="main-content">
