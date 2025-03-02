@@ -5,7 +5,7 @@ require_once '../config/database.php';
 // Ensure the student_id is available in the session
 if (!isset($_SESSION['student_id'])) {
     header('Location: login.php');
-    exit;
+    exit();
 }
 
 // Get the student data from the database using the student_id stored in the session
@@ -21,12 +21,13 @@ if (!$student) {
     exit;
 }
 
-// Fetch the total hours
-$stmt_hours = $pdo->prepare("SELECT SUM(total_hours) AS total_hours FROM duty_logs WHERE student_id = ?");
-$stmt_hours->execute([$_SESSION['student_id']]);
-$total_hours_data = $stmt_hours->fetch(PDO::FETCH_ASSOC);
-$total_hours = $total_hours_data['total_hours'] ?: 0;
+// Fetch the total duty hours
+$stmt = $pdo->prepare("SELECT SUM(duration) AS total_hours FROM duty_logs WHERE student_id = ? AND status = 'Approved'");
+$stmt->execute([$_SESSION['student_id']]);
+$total_hours_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// If no hours found, set total_hours to 0
+$total_hours = round($total_hours_data['total_hours'], 2) ?: 0;
 
 // Fetch the pending logs
 $stmt_pending = $pdo->prepare("SELECT COUNT(*) AS pending_logs FROM duty_logs WHERE student_id = ? AND status = 'pending'");
@@ -34,7 +35,6 @@ $stmt_pending->execute([$_SESSION['student_id']]);
 $pending_logs_data = $stmt_pending->fetch(PDO::FETCH_ASSOC);
 $pending_logs = $pending_logs_data['pending_logs'] ?: 0;
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,8 +44,8 @@ $pending_logs = $pending_logs_data['pending_logs'] ?: 0;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="../assets/student.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css
- ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -66,12 +66,13 @@ $pending_logs = $pending_logs_data['pending_logs'] ?: 0;
     <div class="dashboard-content">
         <div class="card">
             <h3>Your Profile</h3>
-            <p><strong>Name:</strong> <?php echo $student['name']; ?></p>
-            <p><strong>Student ID:</strong> <?php echo $student['student_id']; ?></p>
-            <p><strong>Scholarship Type:</strong> <?php echo $student['scholarship_type']; ?></p>
-            <p><strong>Course:</strong> <?php echo $student['course']; ?></p> <!-- New Field -->
-            <p><strong>Department:</strong> <?php echo $student['department']; ?></p> <!-- New Field -->
-            <p><strong>HK Duty Status:</strong> <?php echo $student['hk_duty_status']; ?></p> <!-- New Field -->
+            <p><strong>Name:</strong> <?php echo htmlspecialchars($student['name']); ?></p>
+            <p><strong>Student ID:</strong> <?php echo htmlspecialchars($student['student_id']); ?></p>
+            <p><strong>Scholarship Type:</strong> <?php echo htmlspecialchars($student['scholarship_type']); ?></p>
+            <p><strong>Course:</strong> <?php echo htmlspecialchars($student['course']); ?></p>
+            <p><strong>Department:</strong> <?php echo htmlspecialchars($student['department']); ?></p>
+            <p><strong>Year Level:</strong> <?php echo htmlspecialchars($student['year_level']); ?></p>
+            <p><strong>HK Duty Status:</strong> <?php echo htmlspecialchars($student['hk_duty_status']); ?></p>
         </div>
 
         <div class="card">
@@ -90,7 +91,7 @@ $pending_logs = $pending_logs_data['pending_logs'] ?: 0;
         <div class="card">
             <h3>Add Duty Log</h3>
             <p>You can log your duty hours here:</p>
-            <a href="add_duty.php" class="btn">Add Duty Log</a> <!-- Link to Add Duty Log Page -->
+            <a href="add_duty.php" class="btn">Add Duty Log</a>
         </div>
 
         <!-- Duty Hours Progress Bar -->
