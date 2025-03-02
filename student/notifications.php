@@ -11,7 +11,7 @@ if (!isset($_SESSION['student_id'])) {
 $student_id = $_SESSION['student_id'];
 
 // Get notifications (duty log statuses)
-$stmt = $pdo->prepare("SELECT * FROM duty_logs WHERE student_id = ?");
+$stmt = $pdo->prepare("SELECT * FROM duty_logs WHERE student_id = ? ORDER BY duty_date DESC, time_in DESC");
 $stmt->execute([$student_id]);
 $notifications = $stmt->fetchAll();
 ?>
@@ -37,10 +37,12 @@ $notifications = $stmt->fetchAll();
             <?php if ($notifications): ?>
             <ul>
                 <?php foreach ($notifications as $notification): ?>
-                <li>
-                    <strong>Time In:</strong> <?php echo $notification['time_in']; ?>
-                    <strong>Time Out:</strong> <?php echo $notification['time_out']; ?>
-                    <strong>Status:</strong> <?php echo $notification['status']; ?>
+                <li data-status="<?php echo $notification['status']; ?>">
+                    <strong>Duty Date:</strong> <?php echo date('Y-m-d', strtotime($notification['duty_date'])); ?><br>
+                    <strong>Time In:</strong> <?php echo date('h:i A', strtotime($notification['time_in'])); ?><br>
+                    <strong>Time Out:</strong>
+                    <?php echo ($notification['time_out']) ? date('h:i A', strtotime($notification['time_out'])) : 'N/A'; ?><br>
+                    <strong>Status:</strong> <span><?php echo htmlspecialchars($notification['status']); ?></span>
                 </li>
                 <?php endforeach; ?>
             </ul>
@@ -48,6 +50,7 @@ $notifications = $stmt->fetchAll();
             <p>No duty log notifications.</p>
             <?php endif; ?>
         </section>
+
     </div>
 </body>
 
