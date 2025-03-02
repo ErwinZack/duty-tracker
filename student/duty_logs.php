@@ -13,9 +13,9 @@ $error = "";
 $success = "";
 
 // Fetch student duty logs from the database
-$student_id = $_SESSION['student_id'];  // Student ID from session (can be changed for admin view)
+$student_id = $_SESSION['student_id'];  // Student ID from session
 
-$stmt = $pdo->prepare("SELECT * FROM duty_logs WHERE student_id = ? ORDER BY time_in DESC");
+$stmt = $pdo->prepare("SELECT * FROM duty_logs WHERE student_id = ? ORDER BY duty_date DESC, time_in DESC");
 $stmt->execute([$student_id]);
 $duty_logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -23,7 +23,6 @@ $duty_logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 if (!$duty_logs) {
     $error = "No duty logs found.";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -56,6 +55,7 @@ if (!$duty_logs) {
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Duty Date</th> <!-- Added Duty Date Column -->
                     <th>Time In</th>
                     <th>Time Out</th>
                     <th>Duration (hours)</th>
@@ -64,21 +64,38 @@ if (!$duty_logs) {
                 </tr>
             </thead>
             <tbody>
+                <?php if (!empty($duty_logs)): ?>
                 <?php foreach ($duty_logs as $log): ?>
                 <tr>
-                    <td><?php echo $log['id']; ?></td>
-                    <td><?php echo date('Y-m-d H:i', strtotime($log['time_in'])); ?></td>
-                    <td><?php echo date('Y-m-d H:i', strtotime($log['time_out'])); ?></td>
-                    <td><?php echo $log['duration']; ?></td>
-                    <td><?php echo $log['status']; ?></td>
+                    <td><?php echo htmlspecialchars($log['id']); ?></td>
+                    <td><?php echo date('Y-m-d', strtotime($log['duty_date'])); ?></td> <!-- Display Duty Date -->
+                    <td><?php echo date('H:i A', strtotime($log['time_in'])); ?></td>
+                    <td><?php echo ($log['time_out']) ? date('H:i A', strtotime($log['time_out'])) : 'N/A'; ?></td>
                     <td>
-                        <!-- View or edit action buttons (optional) -->
+                        <?php 
+                            if ($log['time_out']) {
+                                $time_in = strtotime($log['time_in']);
+                                $time_out = strtotime($log['time_out']);
+                                $hours = round(($time_out - $time_in) / 3600, 2);
+                                echo $hours;
+                            } else {
+                                echo "N/A";
+                            }
+                        ?>
+                    </td>
+                    <td><?php echo htmlspecialchars($log['status']); ?></td>
+                    <td>
                         <?php if ($log['status'] === 'Pending'): ?>
                         <a href="edit_duty_log.php?id=<?php echo $log['id']; ?>">Edit</a>
                         <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
+                <?php else: ?>
+                <tr>
+                    <td colspan="7">No duty logs found.</td>
+                </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
