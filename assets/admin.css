@@ -1,0 +1,989 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    transition: background 0.3s;
+}
+body, html {
+    margin: 0;
+    padding: 0;
+   
+    overflow: hidden; /* Remove any unwanted scroll */
+}
+/* Dashboard Layout */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px; /* Keep original width */
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    position: fixed;
+    height: 100vh; /* Full height */
+    top: 0;
+    left: 0;  /* Ensure it's perfectly aligned to the left */
+    border-right: none; /* Ensure no unwanted border */
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.sidebar ul li a i {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.sidebar ul li a:hover, .sidebar ul li a.active {
+    background-color: #34495e;
+}
+
+/* Logo & Title in One Row */
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align content to the left */
+    gap: 10px; /* Space between logo and text */
+    margin-bottom: 10px;
+}
+
+/* Sidebar Logo */
+.logo-container img {
+    width: 50px; /* Adjust logo size */
+    height: 50px;
+}
+
+/* Horizontal Line */
+.sidebar hr {
+    border: 1px solid white;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    width: calc(100% - 250px);
+    transition: margin-left 0.3s;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  
+}
+
+.header-container h2 {
+    margin: 0;
+    color: #333;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-container input {
+    border: none;
+    outline: none;
+    padding: 5px;
+}
+
+.search-container i {
+    margin-right: 5px;
+    color: gray;
+}
+
+/* Stats Section */
+.stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Space between cards */
+    margin-top: 30px ;
+}
+
+/* Stat Cards */
+.stat-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    width: 23%; /* Four cards in a row */
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Icon Styles */
+.stat-card i {
+    font-size: 40px;
+    margin-right: 10px;
+}
+
+/* Background Colors */
+.stat-card.blue {
+    background-color: #007bff;
+}
+
+.stat-card.yellow {
+    background-color: #f1c40f;
+}
+
+.stat-card.green {
+    background-color: #28a745;
+}
+
+.stat-card.red {
+    background-color: #e74c3c;
+}
+
+/* Action Buttons */
+.actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    flex-grow: 1;
+    margin: 0 5px;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+}
+
+/* Dark Mode */
+.dark-mode {
+    background-color: #1a1a1a;
+    color: white;
+}
+
+.dark-mode .stat-card {
+    background: #333;
+    color: white;
+}
+
+.dark-mode .sidebar {
+    background: #222;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .stat-card {
+        width: 48%;
+    }
+}
+
+@media (max-width: 768px) {
+    .stat-card {
+        width: 100%;
+    }
+}
+/* Floating Settings Button */
+.settings-button {
+    position: fixed;
+    bottom: 170px; /* Adjust for placement */
+    right: 5px;
+    background-color: #2c3e50;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background 0.3s ease;
+}
+
+.settings-button:hover {
+    background-color: #34495e;
+}
+
+/* Settings Sidebar (Hidden by Default) */
+.settings-sidebar {
+    position: fixed;
+    top: 0;
+    right: -350px; /* Completely hidden */
+    width: 250px;
+    height: 100%;
+    background-color: #f4f4f4;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease-in-out;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Open State */
+.settings-sidebar.open {
+    right: 0;
+}
+
+/* Settings Header */
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.settings-header h3 {
+    margin: 0;
+}
+
+.settings-header button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Settings Content */
+.settings-content {
+    margin-top: 20px;
+}
+
+.settings-content label {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.settings-content select,
+.settings-content input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+#bgImageContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns per row */
+    gap: 10px; /* Space between images */
+    margin-top: 10px;
+    max-width: 100%;
+}
+
+.bg-option {
+    width: 100%; /* Makes sure it fills the grid cell */
+    height: 60px; /* Adjust height as needed */
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border 0.3s;
+    object-fit: cover; /* Ensures proper image fit */
+}
+
+.bg-option:hover {
+    transform: scale(1.1);
+    border: 2px solid #007bff;
+}
+
+/* Responsive - Adjust for smaller screens */
+@media (max-width: 600px) {
+    #bgImageContainer {
+        grid-template-columns: repeat(2, 1fr); /* 2 per row on small screens */
+    }
+}
+
+@media (max-width: 400px) {
+    #bgImageContainer {
+        grid-template-columns: repeat(1, 1fr); /* 1 per row on very small screens */
+    }
+}
+
+
+.theme-selection-container {
+    text-align: left;  /* Align text to the left */
+    margin-top: 20px;
+    margin-left: 15px; /* Move slightly to the left */
+    width: 200px; /* Adjust width for better appearance */
+}
+
+.theme-selection-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.theme-selection {
+    display: flex;
+    justify-content: flex-start; /* Align boxes to the left */
+    align-items: center;
+    gap: 15px; /* Reduce spacing for better fit */
+    margin-top: 10px;
+}
+
+.theme-box {
+    width: 40px; /* Increased width for better visibility */
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    padding: 6px;
+}
+
+.light-mode {
+    background: #f1f1f1;
+    color: #333;
+    border: 2px solid #ccc;
+}
+
+/* ✅ Ensure All Text & Backgrounds Change in Dark Mode */
+.dark-mode {
+    background-color: #1a1a1a;
+    color: white;
+}
+
+/* ✅ Make Sidebar Text White in Dark Mode */
+.dark-mode .sidebar {
+    background: #222;
+    color: white;
+}
+
+.dark-mode .sidebar h2,
+.dark-mode .sidebar ul li a {
+    color: white;
+}
+
+/* ✅ Change Sidebar Links on Hover in Dark Mode */
+.dark-mode .sidebar ul li a:hover {
+    background-color: #333;
+}
+
+/* ✅ Ensure the Welcome Card Works in Dark Mode */
+.dark-mode .welcome-card {
+    background: #333;
+    color: white;
+    border: 1px solid #555;
+}
+
+/* ✅ Ensure the Settings Panel Works in Dark Mode */
+.dark-mode .settings-sidebar {
+    background-color: #222;
+    color: white;
+}
+
+.dark-mode .settings-sidebar h3 {
+    color: white;
+}
+
+.dark-mode .settings-sidebar label {
+    color: white;
+}
+
+/* ✅ Ensure Input Fields Have Proper Colors in Dark Mode */
+.dark-mode .settings-content input,
+.dark-mode .settings-content select {
+    background: #333;
+    color: white;
+    border: 1px solid #555;
+}
+
+.dark-mode .settings-content input::placeholder {
+    color: #ccc;
+}
+
+/* ✅ Ensure Action Buttons Adapt to Dark Mode */
+.dark-mode .btn {
+    background-color: #444;
+    color: white;
+}
+
+.dark-mode .btn:hover {
+    background-color: #666;
+}
+
+/* ✅ Apply Dark Mode to Stat Cards */
+.dark-mode .stat-card {
+    background: #333;
+    color: white;
+}
+
+/* ✅ Apply Dark Mode to Theme Selection Boxes */
+.dark-mode .theme-box {
+    background: #444;
+    color: white;
+    border: 2px solid #555;
+}
+
+/* ✅ Highlight Active Theme in Dark Mode */
+.dark-mode .theme-box.active {
+    border: 3px solid #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+/* ✅ Apply Dark Mode to Floating Settings Button */
+.dark-mode .settings-button {
+    background-color: #444;
+    color: white;
+}
+
+.dark-mode .settings-button:hover {
+    background-color: #555;
+}
+
+.theme-box p {
+    font-size: 14px;
+    margin: 0;
+}
+
+.theme-box:hover {
+    transform: scale(1.1);
+}
+
+.theme-box.active {
+    border: 3px solid #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+/* ✅ Apply Dark Mode to Header */
+.dark-mode header {
+    background-color: #222; /* Darker background */
+    color: white;
+    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1); /* Adjust shadow for dark mode */
+}
+
+/* ✅ Ensure Welcome Text in Header is White */
+.dark-mode header h1,
+.dark-mode header h2,
+.dark-mode header p {
+    color: white;
+}
+
+/* ✅ Ensure Any Links or Buttons in Header Are Visible */
+.dark-mode header a {
+    color: #007bff; /* Keep a blue accent for links */
+}
+
+.dark-mode header a:hover {
+    color: #66b3ff; /* Lighter blue on hover */
+}
+
+
+/* ✅ Remove Full-Page Scrollbar */
+html, body {
+    overflow: hidden !important;  /* Completely remove page scrollbar */
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* ✅ Sidebar - Restore Original Size & Enable Internal Scrolling */
+.sidebar {
+    width: 250px; /* Restore original width */
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    position: fixed;
+    height: 100vh; /* Full height */
+    overflow-y: auto; /* Enable scrolling inside sidebar */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    transition: width 0.3s;
+}
+
+/* ✅ Hide Scrollbar but Keep Sidebar Scrolling */
+.sidebar::-webkit-scrollbar {
+    width: 6px; /* Make scrollbar smaller */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3); /* Light scrollbar */
+    border-radius: 10px;
+}
+
+/* ✅ Main Content - Restore Original Margin & Prevent Page Scroll */
+.main-content {
+    overflow-y: auto;  /* Allow scrolling only inside main content */
+    max-height: 100vh; /* Prevent height issues */
+    padding-bottom: 20px; /* Avoid unnecessary scroll */
+    margin-left: 250px; /* Restore to original sidebar width */
+    width: calc(100% - 250px);
+}
+
+/* ✅ Hide All Other Scrollbars */
+::-webkit-scrollbar {
+    width: 0px; /* Remove scrollbar width */
+    display: none; /* Hide scrollbar completely */
+}
+
+* {
+    box-sizing: border-box; /* Prevent unwanted overflow */
+}
+
+/* ✅ Theme Selection Container */
+.theme-selection-container {
+    text-align: left;
+    margin-top: 20px;
+    margin-left: 0; /* Remove unnecessary margin */
+    width: 100%; /* Make it full width */
+}
+
+/* ✅ Theme Selection Label */
+.theme-selection-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* ✅ Theme Selection Boxes - Proper Alignment */
+.theme-selection {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px; /* Reduced spacing for better alignment */
+    margin-top: 10px;
+    flex-wrap: wrap; /* Ensures proper responsiveness */
+}
+
+/* ✅ Theme Box - Adjusted Size & Padding */
+.theme-box {
+    width: 45px; /* Ensure proper spacing */
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    padding: 6px;
+    text-align: center;
+}
+
+/* ✅ Adjust Light & Dark Theme Box Borders */
+.light-mode {
+    background: #f1f1f1;
+    color: #333;
+    border: 2px solid #ccc;
+}
+
+.dark-mode {
+    background: #1a1a1a;
+    color: white;
+}
+
+/* ✅ Highlight Active Theme */
+.theme-box.active {
+    border: 3px solid #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+/* ✅ Theme Box Hover Effect */
+.theme-box:hover {
+    transform: scale(1.1);
+}
+
+/* ✅ Theme Box Icons */
+.theme-box i {
+    font-size: 20px;
+}
+
+/* ✅ Theme Box Text */
+.theme-box p {
+    font-size: 14px;
+    margin: 0;
+}
+
+/* ✅ Match Theme Selection Box with Input Fields */
+.settings-content input,
+.settings-content select {
+    width: 100%; /* Match input width with theme selection */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* ✅ Fix Theme Selection Box Alignment */
+.settings-content select {
+    height: 40px; /* Ensure it's the same height as input fields */
+}
+
+/* ✅ Adjust Dark Mode Styles */
+.dark-mode .theme-box {
+    background: #444;
+    color: white;
+    border: 2px solid #555;
+}
+
+.dark-mode .settings-content input,
+.dark-mode .settings-content select {
+    background: #333;
+    color: white;
+    border: 1px solid #555;
+}
+
+
+
+.color-theme-container {
+    text-align: left;
+    margin-top: 20px;
+    margin-left: 0;
+    width: 100%;
+}
+
+.color-theme-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.color-theme-selection {
+    display: flex;
+    gap: 12px; /* Space between color circles */
+    align-items: center;
+}
+
+.color-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; /* Makes it circular */
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.color-circle:hover {
+    transform: scale(1.1);
+}
+
+.color-circle.active {
+    border: 3px solid #000; /* Highlight the selected color */
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: var(--sidebar-color, #343a40); /* Default color */
+    transition: background-color 0.3s ease-in-out;
+}
+
+
+:root {
+    --theme-color: #343a40; /* Default Sidebar Color */
+    --sidebar-text-color: white; /* Sidebar Text Default */
+}
+
+.sidebar {
+    background-color: var(--theme-color) !important;
+    color: var(--sidebar-text-color);
+    transition: background-color 0.3s ease;
+}
+
+.sidebar ul li a {
+    color: var(--sidebar-text-color);
+}
+
+.sidebar ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Dark Mode Overrides */
+.dark-mode {
+    --theme-color: #222;
+    --sidebar-text-color: #fff;
+}
+
+
+
+.stat-card {
+    flex: 1;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align text and number to the left */
+    justify-content: center;
+    position: relative;
+    text-align: left;
+    min-height: 150px;
+    font-size: 18px;
+    font-weight: bold;
+    padding-top: 40px; /* Push content down to ensure proper spacing */
+    padding-left: 20px; /* Give space from the left edge */
+}
+
+.stat-card p {
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-bottom: 5px; /* Adjust spacing between text and number */
+    position: absolute;
+    top: 15px; /* Moves text to the top */
+    left: 20px; /* Align text to the left */
+}
+
+.stat-card h3 {
+    font-size: 36px; /* Bigger number */
+    margin-top: 30px; /* Adds space between text and number */
+    margin-left: 20px; /* Align number to the left */
+}
+
+.stat-card i {
+    font-size: 80px; /* Bigger icon */
+    position: absolute;
+    right: 15px; /* Keep icon on the right */
+    bottom: 15px;
+    opacity: 0.5; /* Transparency */
+}
+
+/* Card colors */
+.blue {
+    background-color: #007bff;
+}
+
+.yellow {
+    background-color: #ffc107;
+}
+
+.green {
+    background-color: #28a745;
+}
+
+.red {
+    background-color: #dc3545;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+
+
+/* ============================= */
+/* Common Table Styling for All Pages */
+/* ============================= */
+.table-container {
+    width: 95%;
+    margin: 20px auto;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+/* Center align all table head*/
+table thead th{
+    color: white;
+    text-align: left;
+}
+/* Center align all table data (td) */
+table th, table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: center ;
+}
+/* tandaan */
+/* table tbody tr:hover {
+    background: #333;
+} */
+
+
+/* ============================= */
+/* Status Label Styling (Pending, Approved, Rejected) */
+/* ============================= */
+.status {
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.status.pending {
+    background: #ffc107;
+    color: #212529;
+}
+
+.status.approved {
+    background: #28a745;
+    color: white;
+}
+
+.status.rejected {
+    background: #dc3545;
+    color: white;
+}
+
+/* ============================= */
+/* Header Styling for Each Page */
+/* ============================= */
+.header-container {
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;  
+    margin: 0;
+}
+
+
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-mode .table-container {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+body.dark-mode table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+}
+
+body.dark-mode th, body.dark-mode td {
+    padding: 10px;
+    border: 1px solid #444;
+}
+
+body.dark-mode th {
+    background-color: #333;
+}
+
+
+/* Default row styles */
+.table-container table tr {
+    transition: background-color 0.3s ease;
+}
+
+/* Light Mode Hover Fix */
+.light-mode .table-container table tr:hover {
+    background-color: #f0f0f0; /* Light grey for visibility */
+    color: #333; /* Dark text to maintain contrast */
+}
+
+/* Dark Mode Hover */
+.dark-mode .table-container table tr:hover {
+    background-color: #333; /* Darker grey for contrast */
+    color: #fff; /* White text */
+}
+
+
+
+/* Default light mode */
+th {
+    pointer-events: none; /* Prevents hover effects */
+}
+
+/* Ensure no hover effect on <th> */
+th:hover {
+    background-color: inherit !important; /* Keep the same background */
+}
+
+
+/* Light Mode Styles */
+:root {
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --table-border-color: #cccccc;
+}
+
+/* Dark Mode Styles */
+[data-theme="dark"] {
+    --background-color: #1e1e1e;
+    --text-color: #ffffff;
+    --table-border-color: #444444;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--table-border-color);
+}
+
+table th, table td {
+    border: 1px solid var(--table-border-color); /* Vertical and horizontal lines */
+    padding: 10px;
+    text-align: left;
+}
+
+/* Ensure borders are visible in dark mode as well */
+[data-theme="dark"] table th, [data-theme="dark"] table td {
+    border: 1px solid var(--table-border-color);
+}
+
