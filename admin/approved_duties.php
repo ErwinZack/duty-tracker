@@ -37,7 +37,7 @@ $approvedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <div class="dashboard-container">
 
-        <?php include '../admin/includes/sidebar.php'; ?>
+        <?php include '../includes/sidebar.php'; ?>
 
         <main class="main-content">
             <header class="header-container">

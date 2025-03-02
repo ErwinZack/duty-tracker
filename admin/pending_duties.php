@@ -33,7 +33,7 @@ $pending_duties = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <div class="dashboard-container">
 
-        <?php include '../admin/includes/sidebar.php'?>
+        <?php include '../includes/sidebar.php'?>
 
         <!-- Main Content -->
         <main class="main-content">

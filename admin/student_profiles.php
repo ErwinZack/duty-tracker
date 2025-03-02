@@ -32,7 +32,7 @@ if (isset($_GET['delete'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Profiles</title>
-    <link rel="stylesheet" href="../assets/admin.css">
+    <link rel="stylesheet" href="../assets/table.css">
     <script src="../assets/dashboard.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -42,7 +42,7 @@ if (isset($_GET['delete'])) {
     <div class="dashboard-container">
         <!-- Match with approved_duties.php -->
 
-        <?php include '../admin/includes/sidebar.php'; ?>
+        <?php include '../includes/sidebar.php'; ?>
 
         <main class="main-content">
             <!-- Match with approved_duties.php -->
