@@ -515,3 +515,87 @@ select {
     width: 280px;
   }
 }
+
+
+/* Light Mode (Default) */
+body.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.light-mode .sidebar {
+  background-color: #f8f9fa;
+}
+
+body.light-mode .main-content {
+  background-color: #f5f7fa;
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark-mode .sidebar {
+  background-color: #1e1e1e;
+}
+
+body.dark-mode .main-content {
+  background-color: #222;
+}
+
+/* Theme Box Highlight */
+.theme-box {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  display: inline-block;
+  margin: 5px;
+}
+
+.theme-box.active {
+  border: 2px solid #ffcc00;
+}
+
+/* Dark mode styles */
+.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.dark-mode .main-content {
+  background-color: #1e1e1e;
+}
+
+.dark-mode .header-container {
+  background-color: #222;
+  color: white;
+}
+
+.dark-mode .stat-card {
+  background-color: #292929;
+  color: white;
+}
+
+.dark-mode .stat-card .icon-container {
+  background-color: #3a3a3a;
+}
+
+.dark-mode .sidebar {
+  background-color: #181818;
+}
+
+.dark-mode .sidebar a {
+  color: #bbb;
+}
+
+.dark-mode .sidebar a:hover {
+  background-color: #333;
+}
+
+.dark-mode .recent-activities {
+  background-color: #252525;
+  color: white;
+}
+
