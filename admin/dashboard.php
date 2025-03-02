@@ -16,16 +16,41 @@ $stmt = $pdo->prepare("SELECT COUNT(*) AS pending_logs FROM duty_logs WHERE stat
 $stmt->execute();
 $pending_logs = $stmt->fetch(PDO::FETCH_ASSOC)['pending_logs'];
 
-// Fetch approved duty logs
 $stmt = $pdo->prepare("SELECT COUNT(*) AS approved_logs FROM duty_logs WHERE status = 'Approved'");
 $stmt->execute();
 $approved_logs = $stmt->fetch(PDO::FETCH_ASSOC)['approved_logs'];
 
-// Fetch rejected duty logs
 $stmt = $pdo->prepare("SELECT COUNT(*) AS rejected_logs FROM duty_logs WHERE status = 'Rejected'");
 $stmt->execute();
 $rejected_logs = $stmt->fetch(PDO::FETCH_ASSOC)['rejected_logs'];
+
+// Fetch students per department
+$stmt = $pdo->prepare("SELECT department, COUNT(*) AS total FROM students GROUP BY department");
+$stmt->execute();
+$students_per_department = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Prepare data for Chart.js
+$departments = [];
+$student_counts = [];
+
+foreach ($students_per_department as $row) {
+    $departments[] = $row['department'];
+    $student_counts[] = $row['total'];
+}
+
+// Fetch top performing students ranked by total duty hours rendered
+$stmt = $pdo->prepare("
+    SELECT s.student_id, s.name, s.course, s.department, SUM(d.hours_worked) AS total_hours
+    FROM duty_logs d
+    JOIN students s ON d.student_id = s.student_id
+    WHERE d.status = 'Approved'
+    GROUP BY d.student_id
+    ORDER BY total_hours DESC
+");
+$stmt->execute();
+$top_students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -42,28 +67,9 @@ $rejected_logs = $stmt->fetch(PDO::FETCH_ASSOC)['rejected_logs'];
 
 <body>
     <div class="dashboard-container">
-        <!-- Sidebar -->
-        <nav class="sidebar">
-            <div class="logo-container">
-                <img src="../assets/image/University_of_Pangasinan_logo.png" alt="Logo">
-                <!-- Ensure logo path is correct -->
-                <h2>Hk Admin</h2>
-            </div>
-            <hr> <!-- Horizontal line below Admin Panel title -->
-            <ul>
-                <li><a href="dashboard.php" class="active"><i class="fa fa-dashboard"></i></i> Dashboard</a></li>
-                <li><a href="approve_duty.php"><i class="fa fa-check-square-o"></i> Approve
-                        Duty Logs</a></li>
-                <li><a href="student_profiles.php"><i class="fas fa-user"></i> Student Profiles</a></li>
-                <li><a href="add_student.php"><i class="fas fa-user-plus"></i> Add Student</a></li>
-                <li><a href="export_report.php"><i class="fas fa-file-export"></i> Export Reports</a></li>
-                <li><a href="logout.php" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-            </ul>
-        </nav>
 
+        <?php include '../admin/includes/sidebar.php'?>
 
-        <!-- Main Content -->
-        <!-- Main Content -->
         <main class="main-content">
             <!-- Header with Search Filter -->
             <header class="header-container">
@@ -112,6 +118,46 @@ $rejected_logs = $stmt->fetch(PDO::FETCH_ASSOC)['rejected_logs'];
             </section>
 
 
+            <!-- Analytics Section -->
+            <section class="analytics">
+                <h2><i class="fa-solid fa-chart-line"></i> Analytics Dashboard</h2>
+                <div class="chart-container">
+                    <canvas id="analyticsChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Top Performing Students Leaderboard -->
+            <section class="leaderboard">
+                <h2><i class="fa-solid fa-trophy"></i> Top Performing Students</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Course</th>
+                            <th>Department</th>
+                            <th>Total Hours Rendered</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+            $rank = 1;
+            foreach ($top_students as $student): ?>
+                        <tr>
+                            <td><?php echo $rank++; ?></td>
+                            <td><?php echo htmlspecialchars($student['student_id']); ?></td>
+                            <td><?php echo htmlspecialchars($student['name']); ?></td>
+                            <td><?php echo htmlspecialchars($student['course']); ?></td>
+                            <td><?php echo htmlspecialchars($student['department']); ?></td>
+                            <td><?php echo htmlspecialchars($student['total_hours']); ?> hrs</td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </section>
+
+
         </main>
     </div>
     <!-- Settings Button (Floating on Right Side) -->
@@ -149,8 +195,6 @@ $rejected_logs = $stmt->fetch(PDO::FETCH_ASSOC)['rejected_logs'];
 
 
 
-
-
             <div class="color-theme-container">
                 <label class="color-theme-label">Select Sidebar Theme:</label>
                 <div class="color-theme-selection">
@@ -180,5 +224,38 @@ $rejected_logs = $stmt->fetch(PDO::FETCH_ASSOC)['rejected_logs'];
 
         </div>
     </div>
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById("analyticsChart").getContext("2d");
+
+        // Get PHP data and parse JSON
+        const departments = <?php echo json_encode($departments); ?>;
+        const totalStudents = <?php echo json_encode($student_counts); ?>;
+
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: departments,
+                datasets: [{
+                    label: "Total Students Per Department",
+                    data: totalStudents,
+                    backgroundColor: "rgba(54, 162, 235, 0.6)",
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+    </script>
 
 </body>
