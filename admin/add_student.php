@@ -67,92 +67,137 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
+    <div class="dashboard-container">
+        <?php include '../includes/sidebar.php'?>
 
-    <div class="form-container">
-        <h2>Add Student</h2>
+        <main class="main-content">
+            
+            <div class="form-container">
+                <h2>Student Registration</h2>
 
-        <?php if (!empty($error)): ?>
-        <p class="error"><?php echo $error; ?></p>
-        <?php elseif (!empty($success)): ?>
-        <p class="success"><?php echo $success; ?></p>
-        <?php endif; ?>
+                <?php if (!empty($error)): ?>
+                <div class="error"><?php echo $error; ?></div>
+                <?php elseif (!empty($success)): ?>
+                <div class="success"><?php echo $success; ?></div>
+                <?php endif; ?>
 
-        <form action="" method="POST">
-            <label for="student_id">Student ID:</label>
-            <input type="text" name="student_id" required>
+                <form action="" method="POST">
+                    <div class="form-grid">
+                        <!-- Personal Information -->
+                        <div class="form-group">
+                            <label for="student_id"><i class="fas fa-id-card"></i> Student ID:</label>
+                            <input type="text" name="student_id" id="student_id" placeholder="Enter student ID" required>
+                        </div>
 
-            <label for="name">Full Name:</label>
-            <input type="text" name="name" required>
+                        <div class="form-group">
+                            <label for="name"><i class="fas fa-user"></i> Full Name:</label>
+                            <input type="text" name="name" id="name" placeholder="Enter full name" required>
+                        </div>
 
-            <label for="email">Email:</label>
-            <input type="email" name="email" required>
+                        <div class="form-group">
+                            <label for="email"><i class="fas fa-envelope"></i> Email:</label>
+                            <input type="email" name="email" id="email" placeholder="Enter email address" required>
+                        </div>
 
-            <label for="password">Password:</label>
-            <input type="password" name="password" required>
+                        <div class="form-group">
+                            <label for="scholarship_type"><i class="fas fa-award"></i> Scholarship Type:</label>
+                            <select name="scholarship_type" id="scholarship_type" required>
+                                <option value="" disabled selected>Select Scholarship Type</option>
+                                <option value="HK 25">HK 25</option>
+                                <option value="HK 50">HK 50</option>
+                                <option value="HK 75">HK 75</option>
+                            </select>
+                        </div>
 
-            <label for="confirm_password">Confirm Password:</label>
-            <input type="password" name="confirm_password" required>
+                        <!-- Academic Information -->
+                        <div class="form-group">
+                            <label for="course"><i class="fas fa-graduation-cap"></i> Course:</label>
+                            <select name="course" id="course" required>
+                                <option value="" disabled selected>Select Course</option>
+                                <option value="BSIT">BS Information Technology</option>
+                                <option value="BSCS">BS Computer Science</option>
+                                <option value="BSE">BS Education</option>
+                                <option value="BBA">BS Business Administration</option>
+                                <option value="BSCRIM">BS Criminology</option>
+                                <option value="BSA">BS Accountancy</option>
+                                <option value="BSN">BS Nursing</option>
+                                <option value="BSARCH">BS Architecture</option>
+                                <option value="BSCOE">BS Computer Engineering</option>
+                                <option value="BSEE">BS Electrical Engineering</option>
+                            </select>
+                        </div>
 
-            <label for="hk_duty_status">HK Duty Status:</label>
-            <select name="hk_duty_status" required>
-                <option value="" disabled selected>Select Duty Status</option>
-                <option value="Module Distributor">Module Distributor</option>
-                <option value="Student Facilitator">Student Facilitator</option>
-                <option value="Library Assistant">Library Assistant</option>
-                <option value="Admin Assistant">External Facilitator</option>
-            </select>
+                        <div class="form-group">
+                            <label for="department"><i class="fas fa-building"></i> Department:</label>
+                            <select name="department" id="department" required>
+                                <option value="" disabled selected>Select Department</option>
+                                <option value="CEA">CEA</option>
+                                <option value="CMA">CMA</option>
+                                <option value="CAHS">CAHS</option>
+                                <option value="CITE">CITE</option>
+                                <option value="CCJE">CCJE</option>
+                                <option value="CELA">CELA</option>
+                            </select>
+                        </div>
 
-            <label for="scholarship_type">Scholarship Type:</label>
-            <select name="scholarship_type" required>
-                <option value="" disabled selected>Select Scholarship Type</option>
-                <option value="HK 25">HK 25</option>
-                <option value="HK 50">HK 50</option>
-                <option value="HK 75">HK 75</option>
-            </select>
+                        <div class="form-group">
+                            <label for="year_level"><i class="fas fa-layer-group"></i> Year Level:</label>
+                            <select name="year_level" id="year_level" required>
+                                <option value="" disabled selected>Select Year Level</option>
+                                <option value="1st Year">1st Year</option>
+                                <option value="2nd Year">2nd Year</option>
+                                <option value="3rd Year">3rd Year</option>
+                                <option value="4th Year">4th Year</option>
+                                <option value="5th Year">5th Year</option>
+                            </select>
+                        </div>
 
-            <label for="course">Course:</label>
-            <select name="course" required>
-                <option value="" disabled selected>Select Course</option>
-                <option value="BSIT">BS Information Technology</option>
-                <option value="BSCS">BS Computer Science</option>
-                <option value="BSE">BS Education</option>
-                <option value="BBA">BS Business Administration</option>
-                <option value="BSCRIM">BS Criminology</option>
-                <option value="BSA">BS Accountancy</option>
-                <option value="BSE">BS Education</option>
-                <option value="BSN">BS Nursing</option>
-                <option value="BSARCH">BS Architecture</option>
-                <option value="BSCOE">BS Computer Engineering</option>
-                <option value="BSEE">BS Electrical Engineering</option>
-            </select>
+                        <div class="form-group">
+                            <label for="hk_duty_status"><i class="fas fa-tasks"></i> HK Duty Status:</label>
+                            <select name="hk_duty_status" id="hk_duty_status" required>
+                                <option value="" disabled selected>Select Duty Status</option>
+                                <option value="Module Distributor">Module Distributor</option>
+                                <option value="Student Facilitator">Student Facilitator</option>
+                                <option value="Library Assistant">Library Assistant</option>
+                                <option value="Admin Assistant">External Facilitator</option>
+                            </select>
+                        </div>
 
-            <label for="department">Department:</label>
-            <select name="department" required>
-                <option value="" disabled selected>Select Department</option>
-                <option value="CEA">CEA</option>
-                <option value="CMA">CMA</option>
-                <option value="CAHS">CAHS</option>
-                <option value="CITE">CITE</option>
-                <option value="CCJE">CCJE</option>
-                <option value="CELA">CELA</option>
-            </select>
+                        <!-- Password Section -->
+                        <div class="form-group">
+                            <label for="password"><i class="fas fa-lock"></i> Password:
+                            </label>
+                            <input type="password" name="password" id="password" placeholder="Enter password" required>
+                        </div>
 
-            <label for="year_level">Year Level:</label>
-            <select name="year_level" required>
-                <option value="" disabled selected>Select Year Level</option>
-                <option value="1st Year">1st Year</option>
-                <option value="2nd Year">2nd Year</option>
-                <option value="3rd Year">3rd Year</option>
-                <option value="4th Year">4th Year</option>
-                <option value="5th Year">5th Year</option>
-            </select>
+                        <div class="form-group">
+                            <label for="confirm_password"><i class="fas fa-check-circle"></i> Confirm Password:</label>
+                            <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm password" required>
+                        </div>
+                    </div>
 
-            <button type="submit">Add Student</button>
-        </form>
-
-        <a href="dashboard.php">Back to Dashboard</a>
+                    <button type="submit"><i class="fas fa-user-plus"></i> Register Student</button>
+                </form>
+            </div>
+        </main>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get form elements for validation
+            const form = document.querySelector('form');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirm_password');
+            
+            // Simple password matching validation
+            form.addEventListener('submit', function(event) {
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    event.preventDefault();
+                    alert('Passwords do not match!');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -37,10 +37,31 @@ $pending_duties = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <!-- Main Content -->
         <main class="main-content">
-            <header class="header-container">
-                <h2><i class="fa-solid fa-hourglass-half"></i> Pending Duty Logs</h2>
-            </header>
-
+        <header class="header-container">
+    <div class="header-left">
+        <h2><i class="fa-solid fa-hourglass-half"></i> Pending Duties</h2>
+    </div>
+    
+    <div class="header-right">
+        <div class="search-sort-container">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search...">
+            </div>
+            
+            <div class="dropdown">
+                <img src="../assets/image/sort-icon.jpg" alt="Sort" onclick="toggleDropdown()">
+                <div class="dropdown-content" id="dropdown">
+                    <select id="sortSelect">
+                        <option value="id">ID</option>
+                        <option value="student_id">Student ID</option>
+                        <option value="name">Name</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
             <section class="table-container">
                 <table>
                     <thead>
@@ -63,7 +84,7 @@ $pending_duties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?php echo htmlspecialchars($duty['time_in']); ?></td>
                             <td><?php echo $duty['time_out'] ? htmlspecialchars($duty['time_out']) : 'N/A'; ?></td>
                             <td><?php echo htmlspecialchars($duty['hours_worked']); ?></td>
-                            <td><span class="status pending">Pending</span></td>
+                            <td><span class="statuspending">Pending</span></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
