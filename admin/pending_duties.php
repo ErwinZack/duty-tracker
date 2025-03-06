@@ -38,10 +38,11 @@ $pending_duties = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- Main Content -->
         <main class="main-content">
         <header class="header-container">
-    <div class="header-left">
-        <h2><i class="fa-solid fa-hourglass-half"></i> Pending Duties</h2>
-    </div>
-    
+        <div class="pending-page">
+            <div class="header-left">
+                <h2><i class="fa-solid fa-hourglass-half"></i> Pending Duties</h2>
+            </div>
+        </div>
     <div class="header-right">
         <div class="search-sort-container">
             <div class="search-container">

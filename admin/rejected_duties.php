@@ -38,8 +38,29 @@ $rejectedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <main class="main-content">
             <header class="header-container">
-                <h2><i class="fa-solid fa-thumbs-down"></i> Rejected Duty Logs</h2>
+                <div class="rejected-page">
+                    <div class="header-left">
+                    <h2><i class="fa-solid fa-thumbs-down"></i> Rejected Duty Logs</h2>
+                    </div>
+                </div>
+                <div class="header-right">
+        <div class="search-sort-container">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search...">
+            </div>
+            <div class="dropdown">
+                <img src="../assets/image/sort-icon.jpg" alt="Sort" onclick="toggleDropdown()">
+                <div class="dropdown-content" id="dropdown">
+                    <select id="sortSelect">
+                        <option value="id">ID</option>
+                        <option value="student_id">Student ID</option>
+                        <option value="name">Name</option>
+                    </select>
+                </div>
+            </div>
             </header>
+
 
             <section class="table-container">
                 <table>

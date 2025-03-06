@@ -34,9 +34,10 @@ $rejected_logs = $stmt->fetch(PDO::FETCH_ASSOC)['rejected_logs'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../assets/dashboard.css">
+    <link rel="stylesheet" href="../assets/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Add Chart.js library -->
 </head>
 
 <body>
@@ -51,10 +52,63 @@ $rejected_logs = $stmt->fetch(PDO::FETCH_ASSOC)['rejected_logs'];
                 </div>
                 <h2><i class="fa-solid fa-house"></i> Welcome to Admin Dashboard</h2>
             </div>
+            
+            <div class="header-right">
             <div class="date-picker-container">
             <i class="fa-regular fa-calendar"></i>
                 <input type="text" id="dateRange" class="date-input" readonly>
             </div>
+            <div class="notification-dropdown">
+                <button class="notification-icon" id="notificationToggle">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="badge" id="notificationCount"></span>
+                </button>
+
+                <div class="dropdown-menu" id="notificationMenu">
+                    <div class="notification-header">
+                        <h4>Notifications</h4>
+                        <button class="mark-all-read">
+                            <img src="../assets/image/double-check.svg" alt="doublecheck"><span>Mark all as read</span>
+                        </button>
+
+                    </div>
+                    <ul>
+                        <li class="unread">
+                            <img src="../assets/image/user1.jpg" class="profile-notif" alt="default">
+                            <div class="notification-content">
+                                <p><strong>New student registered</strong> Added a student</p><br>
+                                <small>Thursday 4:20pm</small>
+                            </div>
+                            <span class="time-ago">2 hours ago</span>
+                            <span class="unread-dot"></span>
+                        </li>
+                        
+                        <li class="unread">
+                            <img src="../assets/image/user2.jpg" class="profile-notif" alt="default">
+                            <div class="notification-content">
+                                <p><strong>Pending duty log</strong>
+                                 needs review</p><br>
+                                <small>Thursday 3:12pm</small>
+                            </div>
+                            <span class="time-ago">3 hours ago</span>
+                            <span class="unread-dot"></span>
+                        </li>
+
+                        <li class="unread">
+                            <img src="../assets/image/user2.jpg" class="profile-notif" alt="default">
+                            <div class="notification-content">
+                                <p><strong>Duty log approved</strong>
+                                View Duty Approved</p><br>
+                                <small>Thursday 3:11pm</small>
+                            </div>
+                            <span class="time-ago">3 hours ago</span>
+                            <span class="unread-dot"></span>
+                        </li>
+                    </ul>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+            </div>
+        </div>
         </header>
         <section class="stats">
             <a href="total_students.php" class="stat-card blue">
@@ -94,12 +148,42 @@ $rejected_logs = $stmt->fetch(PDO::FETCH_ASSOC)['rejected_logs'];
                 </div>
             </a>
         </section>
-        <section class="recent-activities">
-            <h3>Recent Activities</h3>
-            <div class="activity-placeholder">
-                <p>Loading recent activities...</p>
+        <!--chart-->
+        <h3><i class="fa-solid fa-chart-simple"></i>&nbsp;&nbsp;Scholars in Different Departments</h3>
+        <div class="chart-table-container">
+            <div class="chart-container">
+                <canvas id="scholarChart"></canvas>
             </div>
-        </section>
+            <div class="table-box">
+                <h3><i class="fa-solid fa-medal"></i>Top Performing Students</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Hours Rendered</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Joshua Co</td>
+                            <td>CEA</td>
+                            <td>90 hrs</td>
+                        </tr>
+                        <tr>
+                            <td>Jonas Enriquez</td>
+                            <td>CITE</td>
+                            <td>82 hrs</td>
+                        </tr>
+                        <tr>
+                            <td>Bruce Wayne</td>
+                            <td>CMA</td>
+                            <td>70 hrs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </main>
 </div>
 
@@ -162,7 +246,7 @@ $rejected_logs = $stmt->fetch(PDO::FETCH_ASSOC)['rejected_logs'];
     </div>
 </div>
 
-    <script src="../assets/db.js"></script>
+<script src="../assets/dashboard.js"></script>
 </body>
 
 </html>

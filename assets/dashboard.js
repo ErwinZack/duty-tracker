@@ -330,3 +330,79 @@ window.onclick = function(event) {
         modal.style.display = 'none';
     }
 }
+   // Toggle notification dropdown
+   document.getElementById("notificationToggle").addEventListener("click", function() {
+    var menu = document.getElementById("notificationMenu");
+    menu.classList.toggle("show");
+});
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.notification-icon') && !event.target.matches('.notification-icon *')) {
+        var dropdowns = document.getElementsByClassName("dropdown-menu");
+        for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+};
+
+// Mark notification as read
+document.querySelectorAll(".notification-item").forEach(item => {
+    item.addEventListener("click", function() {
+        var notificationId = this.dataset.id;
+        this.parentElement.classList.remove("unread");
+        // Add AJAX call to mark notification as read in the database
+        // Example:
+        // fetch(`mark_notification_read.php?id=${notificationId}`, { method: 'POST' });
+    });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    
+    const labels = ['CEA', 'CITE', 'CMA', 'CAHS', 'CCJE', 'CELA'];
+    const data = {
+        labels: labels,
+        datasets: [{
+            label: 'Number of Scholars',
+            data: [12, 19, 3, 5, 2, 3], 
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    // Configuration options
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    // Render the chart
+    const scholarChart = new Chart(
+        document.getElementById('scholarChart'),
+        config
+    );
+});

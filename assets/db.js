@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
     // Toggle sidebar on mobile
     const menuToggle = document.getElementById('menu-toggle');
@@ -330,3 +331,128 @@ document.addEventListener("DOMContentLoaded", function () {
         darkModeBox.classList.remove("active");
     });
 });
+   // Toggle notification dropdown
+   document.getElementById("notificationToggle").addEventListener("click", function() {
+    var menu = document.getElementById("notificationMenu");
+    menu.classList.toggle("show");
+});
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.notification-icon') && !event.target.matches('.notification-icon *')) {
+        var dropdowns = document.getElementsByClassName("dropdown-menu");
+        for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+};
+
+// Mark notification as read
+document.querySelectorAll(".notification-item").forEach(item => {
+    item.addEventListener("click", function() {
+        var notificationId = this.dataset.id;
+        this.parentElement.classList.remove("unread");
+        // Add AJAX call to mark notification as read in the database
+        // Example:
+        // fetch(`mark_notification_read.php?id=${notificationId}`, { method: 'POST' });
+    });
+});
+        // Backend Connection Point 1: Fetch initial data
+        // Replace this static data with API call to your backend
+        // Example: fetch('/api/chart-data').then(...)
+
+        const departmentData = {
+            labels: ['CEA', 'CITE', 'CMA', 'CAHS', 'CCJE', 'CELA'], // Department names
+            datasets: [{
+                label: 'Number of Scholars',
+                data: [125, 95, 80, 115, 90, 65], // Number of scholars per department
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.5)', // CEA
+                    'rgba(255, 99, 132, 0.5)', // CITE
+                    'rgba(75, 192, 192, 0.5)', // CMA
+                    'rgba(153, 102, 255, 0.5)', // CAHS
+                    'rgba(255, 159, 64, 0.5)', // CCJE
+                    'rgba(201, 203, 207, 0.5)' // CELA
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(201, 203, 207, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        // Chart configuration for a bar graph
+        const config = {
+            type: 'bar',
+            data: departmentData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Number of Scholars in Each Department'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        suggestedMax: 200, // Increase this value
+                        ticks: {
+                            stepSize: 20 // Ensure ticks increment by 20
+                        },
+                        grid: {
+                            color: '#e0e0e0'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Number of Scholars'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Departments'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        };
+
+        // Initialize chart
+        const ctx = document.getElementById('scholarChart').getContext('2d');
+        const scholarChart = new Chart(ctx, config);
+
+        // Backend Connection Point 2: Real-time updates
+        // Add WebSocket or periodic fetch here to update chart data
+        // Example: setInterval(() => fetchNewData(), 5000)
+
+        // Sample update function (replace with actual backend call)
+        function updateChart(newData) {
+            scholarChart.data.labels = newData.labels;
+            scholarChart.data.datasets[0].data = newData.data;
+            scholarChart.update();
+        }
+
+        // Example of updating the chart with new data
+        setTimeout(() => {
+            const newData = {
+                labels: ['CEA', 'CITE', 'CMA', 'CAHS', 'CCJE', 'CELA'],
+                data: [140, 100, 85, 120, 95, 70] // Updated scholar counts
+            };
+            updateChart(newData);
+        }, 5000); // Simulate an update after 5 seconds

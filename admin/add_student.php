@@ -9,107 +9,144 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
-$error = "";
-$success = "";
+// Initialize message variables
+$message = [
+    'type' => '',
+    'text' => ''
+];
 
+// Process form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $student_id = trim($_POST['student_id']);
-    $name = trim($_POST['name']);
-    $scholarship_type = trim($_POST['scholarship_type']);
-    $course = trim($_POST['course']);
-    $department = trim($_POST['department']);
-    $year_level = trim($_POST['year_level']);
-    $hk_duty_status = trim($_POST['hk_duty_status']);
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
-    $confirm_password = trim($_POST['confirm_password']);
+    // Sanitize and validate input
+    $student_id = trim($_POST['student_id'] ?? '');
+    $name = trim($_POST['name'] ?? '');
+    $scholarship_type = trim($_POST['scholarship_type'] ?? '');
+    $course = trim($_POST['course'] ?? '');
+    $department = trim($_POST['department'] ?? '');
+    $year_level = trim($_POST['year_level'] ?? '');
+    $hk_duty_status = trim($_POST['hk_duty_status'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = trim($_POST['password'] ?? '');
+    $confirm_password = trim($_POST['confirm_password'] ?? '');
 
-    if (!empty($student_id) && !empty($name) && !empty($scholarship_type) && !empty($course) &&
-        !empty($department) && !empty($year_level) && !empty($hk_duty_status) && !empty($email) &&
-        !empty($password) && !empty($confirm_password)) {
+    // Validate all required fields are filled
+    $requiredFields = [
+        $student_id, $name, $scholarship_type, $course, 
+        $department, $year_level, $hk_duty_status, 
+        $email, $password, $confirm_password
+    ];
 
-        if ($password === $confirm_password) {
-            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-
+    if (in_array('', $requiredFields, true)) {
+        $message = [
+            'type' => 'error',
+            'text' => 'Please fill in all fields.'
+        ];
+    } elseif ($password !== $confirm_password) {
+        $message = [
+            'type' => 'error',
+            'text' => 'Passwords do not match.'
+        ];
+    } else {
+        try {
             // Check if student_id or email already exists
             $stmt = $pdo->prepare("SELECT id FROM students WHERE student_id = ? OR email = ?");
             $stmt->execute([$student_id, $email]);
 
-            if ($stmt->rowCount() == 0) {
+            if ($stmt->rowCount() > 0) {
+                $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if ($existing['id'] === $student_id && $existing['email'] === $email) {
+                    $message = [
+                        'type' => 'error',
+                        'text' => 'Both Student ID and Email already exist.'
+                    ];
+                } elseif ($existing['id'] === $student_id) {
+                    $message = [
+                        'type' => 'error',
+                        'text' => 'Student ID already exists.'
+                    ];
+                } else{
+                    $message = [
+                        'type' => 'error',
+                        'text' => 'Email already exists.'
+                    ];
+                }
+            } else{
+                $hashed_password = password_hash($password, PASSWORD_BCRYPT);
                 // Insert student data
                 $stmt = $pdo->prepare("INSERT INTO students (student_id, name, scholarship_type, course, department, year_level, hk_duty_status, email, password) 
                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                
                 if ($stmt->execute([$student_id, $name, $scholarship_type, $course, $department, $year_level, $hk_duty_status, $email, $hashed_password])) {
-                    $success = "Student added successfully!";
+                    $message = [
+                        'type' => 'success',
+                        'text' => 'Student successfully registered!'
+                    ];
+                    
+                    // Clear POST data after successful submission
+                    $_POST = [];
                 } else {
-                    $error = "Error occurred while adding student.";
+                    $message = [
+                        'type' => 'error',
+                        'text' => 'Error occurred while adding student.'
+                    ];
                 }
-            } else {
-                $error = "Student ID or Email already exists.";
             }
-        } else {
-            $error = "Passwords do not match.";
+        } catch (PDOException $e) {
+            $message = [
+                'type' => 'error',
+                'text' => 'Database error: ' . $e->getMessage()
+            ];
         }
-    } else {
-        $error = "Please fill in all fields.";
     }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Student</title>
     <link rel="stylesheet" href="../assets/admin.css">
 </head>
-
 <body>
     <div class="dashboard-container">
         <?php include '../includes/sidebar.php'?>
 
         <main class="main-content">
-            
             <div class="form-container">
-                <h2>Student Registration</h2>
+                <h2><i class="fas fa-user-graduate"></i> Student Registration</h2>
 
-                <?php if (!empty($error)): ?>
-                <div class="error"><?php echo $error; ?></div>
-                <?php elseif (!empty($success)): ?>
-                <div class="success"><?php echo $success; ?></div>
-                <?php endif; ?>
-
-                <form action="" method="POST">
+                <form action="" method="POST" id="studentRegistrationForm">
                     <div class="form-grid">
-                        <!-- Personal Information -->
                         <div class="form-group">
                             <label for="student_id"><i class="fas fa-id-card"></i> Student ID:</label>
-                            <input type="text" name="student_id" id="student_id" placeholder="Enter student ID" required>
+                            <input type="text" name="student_id" id="student_id" placeholder="Enter student ID" 
+                                   value="<?= htmlspecialchars($_POST['student_id'] ?? '') ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label for="name"><i class="fas fa-user"></i> Full Name:</label>
-                            <input type="text" name="name" id="name" placeholder="Enter full name" required>
+                            <input type="text" name="name" id="name" placeholder="Enter full name" 
+                                   value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label for="email"><i class="fas fa-envelope"></i> Email:</label>
-                            <input type="email" name="email" id="email" placeholder="Enter email address" required>
+                            <input type="email" name="email" id="email" placeholder="Enter email address" 
+                                   value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label for="scholarship_type"><i class="fas fa-award"></i> Scholarship Type:</label>
                             <select name="scholarship_type" id="scholarship_type" required>
                                 <option value="" disabled selected>Select Scholarship Type</option>
-                                <option value="HK 25">HK 25</option>
-                                <option value="HK 50">HK 50</option>
-                                <option value="HK 75">HK 75</option>
+                                <option value="HK 25" <?= isset($_POST['scholarship_type']) && $_POST['scholarship_type'] == 'HK 25' ? 'selected' : '' ?>>HK 25</option>
+                                <option value="HK 50" <?= isset($_POST['scholarship_type']) && $_POST['scholarship_type'] == 'HK 50' ? 'selected' : '' ?>>HK 50</option>
+                                <option value="HK 75" <?= isset($_POST['scholarship_type']) && $_POST['scholarship_type'] == 'HK 75' ? 'selected' : '' ?>>HK 75</option>
                             </select>
                         </div>
-
-                        <!-- Academic Information -->
                         <div class="form-group">
                             <label for="course"><i class="fas fa-graduation-cap"></i> Course:</label>
                             <select name="course" id="course" required>
@@ -126,7 +163,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <option value="BSEE">BS Electrical Engineering</option>
                             </select>
                         </div>
-
                         <div class="form-group">
                             <label for="department"><i class="fas fa-building"></i> Department:</label>
                             <select name="department" id="department" required>
@@ -139,7 +175,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <option value="CELA">CELA</option>
                             </select>
                         </div>
-
                         <div class="form-group">
                             <label for="year_level"><i class="fas fa-layer-group"></i> Year Level:</label>
                             <select name="year_level" id="year_level" required>
@@ -162,11 +197,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <option value="Admin Assistant">External Facilitator</option>
                             </select>
                         </div>
-
-                        <!-- Password Section -->
                         <div class="form-group">
-                            <label for="password"><i class="fas fa-lock"></i> Password:
-                            </label>
+                            <label for="password"><i class="fas fa-lock"></i> Password:</label>
                             <input type="password" name="password" id="password" placeholder="Enter password" required>
                         </div>
 
@@ -175,29 +207,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm password" required>
                         </div>
                     </div>
-
+                    
                     <button type="submit"><i class="fas fa-user-plus"></i> Register Student</button>
                 </form>
             </div>
         </main>
     </div>
+    <div id="toast-container"></div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get form elements for validation
-            const form = document.querySelector('form');
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('confirm_password');
-            
-            // Simple password matching validation
-            form.addEventListener('submit', function(event) {
-                if (passwordInput.value !== confirmPasswordInput.value) {
-                    event.preventDefault();
-                    alert('Passwords do not match!');
-                }
-            });
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('studentRegistrationForm');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm_password');
+        
+        // Client-side password validation
+        form.addEventListener('submit', function(event) {
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                event.preventDefault();
+                showToast("Passwords do not match!", "error");
+                return;
+            }
         });
+
+        // Server-side message handling
+        <?php if (!empty($message['text'])): ?>
+            showToast("<?= addslashes($message['text']) ?>", "<?= $message['type'] ?>");
+        <?php endif; ?>
+    });
+
+    function showToast(message, type) {
+        const toastContainer = document.getElementById("toast-container");
+        
+        // Remove any existing toasts
+        const existingToasts = document.querySelectorAll('.toast');
+        existingToasts.forEach(toast => toast.remove());
+
+        const toast = document.createElement("div");
+        toast.classList.add("toast", type);
+        toast.innerHTML = `
+            <span class="icon">${type === "success" ? "✔" : "✖"}</span>
+            <div class="toast-content">
+                <div class="toast-message">${message}</div>
+            </div>
+            <div class="toast-progress"></div>
+        `;
+
+        toastContainer.appendChild(toast);
+        toast.classList.add('show');
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 500);
+        }, 5000);
+    }
     </script>
 </body>
-
 </html>

@@ -7,6 +7,13 @@ if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
     exit();
 }
+$stmt = $pdo->prepare("SELECT COUNT(*) AS total_students FROM students");
+$stmt->execute();
+$total_students = $stmt->fetch(PDO::FETCH_ASSOC)['total_students'];
+
+$stmt = $pdo->prepare("SELECT COUNT(*) AS pending_logs FROM duty_logs WHERE status = 'Pending'");
+$stmt->execute();
+$pending_logs = $stmt->fetch(PDO::FETCH_ASSOC)['pending_logs'];
 
 // Check if the session variables exist before using them
 $admin_name = isset($_SESSION['admin_name']) ? $_SESSION['admin_name'] : "Not Set";
@@ -39,7 +46,7 @@ if ($admin_data) {
         <?php include '../includes/sidebar.php' ?>
         <main class="main-content">
             <div class="content">
-                <!-- Profile Section -->
+                <!-- profile Section -->
                 <div class="profile-container">
                     <div class="profile-card">
                         <img src="../assets/image/nctnvr.jpg" alt="Profile Picture" class="profile-pic">
@@ -50,23 +57,23 @@ if ($admin_data) {
                             Admin</p>
                             <div class="profile-stats">
                                 <div class="stat-item">
-                                    <span class="stat-value">4</span>
+                                    <span class="stat-value"><?php echo $total_students; ?></span>
                                     <span class="stat-label">Total Students</span>
                                 </div>
                                 <div class="stat-item">
-                                    <span class="stat-value">4</span>
+                                    <span class="stat-value"><?php echo $pending_logs; ?></span>
                                     <span class="stat-label">Pending Approval</span>
                                 </div>
                                 <div class="stat-item">
-                                    <span class="stat-value">02-05-2025</span>
-                                    <span class="stat-label">Last Login</span>
+                                    <span class="stat-value">3 Unread Messages</span>
+                                    <span class="stat-label">Notifications</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Account Details Section -->
+                <!-- account Details Section -->
                 <div class="account-section">
                     <h2 class="section-title">Account Details</h2>
                     <div class="account-container">
