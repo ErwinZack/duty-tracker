@@ -74,14 +74,10 @@ $approvedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <tr>
                             <th>Student ID</th>
                             <th>Name</th>
-                            <th>Course</th>
-                            <th>Department</th>
                             <th>Duty Date</th>
                             <th>Time In</th>
                             <th>Time Out</th>
                             <th>Hours Worked</th>
-                            <th>Total Hours</th>
-                            <!-- <th>Approved At</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -89,14 +85,10 @@ $approvedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <tr>
                             <td><?php echo htmlspecialchars($log['student_id']); ?></td>
                             <td><?php echo htmlspecialchars($log['name']); ?></td>
-                            <td><?php echo htmlspecialchars($log['course']); ?></td>
-                            <td><?php echo htmlspecialchars($log['department']); ?></td>
                             <td><?php echo date('Y-m-d', strtotime($log['duty_date'])); ?></td>
                             <td><?php echo date('h:i A', strtotime($log['time_in'])); ?></td>
                             <td><?php echo date('h:i A', strtotime($log['time_out'])); ?></td>
                             <td><?php echo number_format($log['hours_worked'], 2); ?> hrs</td>
-                            <td><?php echo number_format($log['total_hours'], 2); ?> hrs</td>
-                            <!-- <td><?php echo date('Y-m-d h:i A', strtotime($log['approved_at'])); ?></td> -->
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

@@ -37,7 +37,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </li>
             <li>
                 <a href="approve_duty.php" class="<?php echo ($current_page == 'approve_duty.php') ? 'active' : ''; ?>">
-                    <i class="fas fa-check-square"></i> Approve Duty Logs
+                    <i class="fas fa-check-square"></i> Duty Work Records
                 </a>
             </li>
             <li>

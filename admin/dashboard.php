@@ -155,7 +155,8 @@ $rejected_logs = $stmt->fetch(PDO::FETCH_ASSOC)['rejected_logs'];
                 <canvas id="scholarChart"></canvas>
             </div>
             <div class="table-box">
-                <h3><i class="fa-solid fa-medal"></i>Top Performing Students</h3>
+                <h3><i class="fa-solid fa-medal"></i>Top Scholars Duty Hours
+                </h3>
                 <table>
                     <thead>
                         <tr>

@@ -68,13 +68,12 @@ $rejectedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <tr>
                             <th>Student ID</th>
                             <th>Name</th>
-                            <th>Course</th>
-                            <th>Department</th>
                             <th>Duty Date</th>
                             <th>Time In</th>
                             <th>Time Out</th>
                             <th>Hours Worked</th>
                             <th>Total Hours</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,8 +81,6 @@ $rejectedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <tr>
                             <td><?php echo htmlspecialchars($log['student_id']); ?></td>
                             <td><?php echo htmlspecialchars($log['name']); ?></td>
-                            <td><?php echo htmlspecialchars($log['course']); ?></td>
-                            <td><?php echo htmlspecialchars($log['department']); ?></td>
                             <td><?php echo htmlspecialchars($log['duty_date']); ?></td>
                             <td><?php echo htmlspecialchars($log['time_in']); ?></td>
                             <td><?php echo htmlspecialchars($log['time_out']); ?></td>

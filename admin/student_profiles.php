@@ -47,8 +47,31 @@ if (isset($_GET['delete'])) {
         <main class="main-content">
             <!-- Match with approved_duties.php -->
             <header class="header-container">
-                <h2><i class="fa fa-users"></i> Student Profiles</h2>
-            </header>
+    <div class="header-left">
+        <h2><i class="fas fa-users"></i> Total Students</h2>
+    </div>
+    
+    <div class="header-right">
+        <div class="search-sort-container">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search...">
+            </div>
+            
+            <div class="dropdown">
+                <img src="../assets/image/sort-icon.jpg" alt="Sort" onclick="toggleDropdown()">
+                <div class="dropdown-content" id="dropdown">
+                    <select id="sortSelect">
+                        <option value="id">ID</option>
+                        <option value="student_id">Student ID</option>
+                        <option value="name">Name</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
 
             <section class="table-container">
                 <table>
