@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else{
                     $message = [
                         'type' => 'error',
-                        'text' => 'Email already exists.'
+                        'text' => 'User is Already Existed'
                     ];
                 }
             } else{
@@ -82,8 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         'type' => 'success',
                         'text' => 'Student successfully registered!'
                     ];
-                    
-                    // Clear POST data after successful submission
+
                     $_POST = [];
                 } else {
                     $message = [
@@ -199,16 +198,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                         <div class="form-group">
                             <label for="password"><i class="fas fa-lock"></i> Password:</label>
-                            <input type="password" name="password" id="password" placeholder="Enter password" required>
+                            <div class="password-container">
+                                <input type="password" name="password" id="password" placeholder="Enter password" required>
+                                <img src="../assets/image/eye-beauty.png" alt="Show Password" class="toggle-password" data-target="password">
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label for="confirm_password"><i class="fas fa-check-circle"></i> Confirm Password:</label>
-                            <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm password" required>
+                            <div class="password-container">
+                                <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm password" required>
+                                <img src="../assets/image/eye-beauty.png" alt="Show Password" class="toggle-password" data-target="confirm_password">
+                            </div>
                         </div>
                     </div>
-                    
                     <button type="submit"><i class="fas fa-user-plus"></i> Register Student</button>
+                    </div>
                 </form>
             </div>
         </main>
@@ -217,17 +222,84 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.toggle-password').forEach(function (icon) {
+            icon.addEventListener('click', function () {
+            let input = document.getElementById(this.dataset.target);
+            if (input.type === "password") {
+                input.type = "text";
+                this.src = "../assets/image/hide.png"; 
+            } else {
+                input.type = "password";
+                this.src = "../assets/image/eye-beauty.png"; 
+            }
+        });
+    });
         const form = document.getElementById('studentRegistrationForm');
         const passwordInput = document.getElementById('password');
         const confirmPasswordInput = document.getElementById('confirm_password');
+        const studentIdInput = document.getElementById('student_id');
+        const nameInput = document.getElementById('name'); 
+
+        let studentIdError = document.createElement('p');
+        studentIdError.style.color = 'red';
+        studentIdError.style.fontSize = '12px';
+        studentIdError.style.marginTop = '2px';
+        studentIdInput.parentNode.appendChild(studentIdError);
         
-        // Client-side password validation
-        form.addEventListener('submit', function(event) {
-            if (passwordInput.value !== confirmPasswordInput.value) {
+        let nameError = document.createElement('p'); 
+        nameError.style.color = 'red';
+        nameError.style.fontSize = '12px';
+        nameError.style.marginTop = '2px';
+        nameInput.parentNode.appendChild(nameError);
+        //digits and hyphens allowed
+        const studentIdPattern = /^03-\d{4}-\d{6}$/;
+
+        // student ID while typing
+        studentIdInput.addEventListener('input', function(){
+            const inputValue = studentIdInput.value;
+
+            if (/[a-zA-Z]/.test(inputValue)){
+                studentIdError.textContent = '❌ Letters are not allowed! use only numbers and dashes.';
+            } else if (inputValue.length < 14){
+                studentIdError.textContent = ''; 
+            } else if (!studentIdPattern.test(inputValue)){
+                studentIdError.textContent = '❌ Invalid format! I.E 03-2324-031593';
+            } else {
+                studentIdError.textContent = ''; 
+            }
+        });
+        const namePattern = /^[A-Za-z\s]+$/;
+
+        nameInput.addEventListener('input', function(){
+            const inputValue = nameInput.value;
+            if (/[0-9]/.test(inputValue)){
+                nameError.textContent = '❌ Numbers are not allowed!';
+            } else if (inputValue.length < 3){
+                nameError.textContent = '❌ Name is too short!';
+            } else if (!namePattern.test(inputValue)){
+                nameError.textContent = '❌ Invalid format! Only letters and spaces are allowed.';
+            } else {
+                nameError.textContent = '';
+            }
+        });
+
+        form.addEventListener('submit', function(event){
+            let isValid = true;
+
+            if (passwordInput.value !== confirmPasswordInput.value){
                 event.preventDefault();
                 showToast("Passwords do not match!", "error");
-                return;
+                isValid = false;
             }
+
+            // Student ID final validation before submission
+            if (!studentIdPattern.test(studentIdInput.value)){
+                event.preventDefault();
+                showToast("Invalid Student ID format!", "error");
+                isValid = false;
+            }
+
+            if (!isValid) return;
         });
 
         // Server-side message handling
@@ -236,31 +308,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
     });
 
+    // Toast notification function
     function showToast(message, type) {
-        const toastContainer = document.getElementById("toast-container");
-        
-        // Remove any existing toasts
-        const existingToasts = document.querySelectorAll('.toast');
-        existingToasts.forEach(toast => toast.remove());
+    const toastContainer = document.getElementById("toast-container");
 
-        const toast = document.createElement("div");
-        toast.classList.add("toast", type);
-        toast.innerHTML = `
-            <span class="icon">${type === "success" ? "✔" : "✖"}</span>
-            <div class="toast-content">
-                <div class="toast-message">${message}</div>
-            </div>
-            <div class="toast-progress"></div>
-        `;
+    // Remove any existing toasts
+    const existingToasts = document.querySelectorAll('.toast');
+    existingToasts.forEach(toast => toast.remove());
 
-        toastContainer.appendChild(toast);
-        toast.classList.add('show');
+    const toast = document.createElement("div");
+    toast.classList.add("toast", type);
+    toast.innerHTML = `
+        <span class="icon">${type === "success" ? "✔" : "✖"}</span>
+        <div class="toast-content">
+            <div class="toast-message">${message}</div>
+        </div>
+        <div class="toast-progress"></div>
+    `;
 
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 500);
-        }, 5000);
-    }
-    </script>
+    toastContainer.appendChild(toast);
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 500);
+    }, 5000);
+}
+</script>
+
 </body>
 </html>
