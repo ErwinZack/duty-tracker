@@ -101,20 +101,25 @@ if (isset($_GET['delete'])) {
                             <td><?php echo htmlspecialchars($student['year_level']); ?></td>
                             <td><?php echo htmlspecialchars($student['hk_duty_status']); ?></td>
                             <td><?php echo date('Y-m-d', strtotime($student['created_at'])); ?></td>
-                            <td>
-                            <a href="#" class="edit-btn btn" 
-                                data-id="<?php echo $student['id']; ?>"
-                                data-name="<?php echo htmlspecialchars($student['name']); ?>"
-                                data-email="<?php echo htmlspecialchars($student['email']); ?>"
-                                data-course="<?php echo htmlspecialchars($student['course']); ?>"
-                                data-department="<?php echo htmlspecialchars($student['department']); ?>"
-                                data-scholarship-type="<?php echo htmlspecialchars($student['scholarship_type']); ?>"
-                                data-hk-duty-status="<?php echo htmlspecialchars($student['hk_duty_status']); ?>"
-                                data-year-level="<?php echo htmlspecialchars($student['year_level']); ?>">
-                                Edit
-                                </a>
-                                <a href="?delete=<?php echo $student['id']; ?>" class="btn"
-                                    onclick="return confirm('Are you sure?')">Delete</a>
+                            <td><div class="table-icon">
+                                <a href="#" class="edit-btn btn" 
+                                    data-id="<?php echo $student['id']; ?>"
+                                    data-name="<?php echo htmlspecialchars($student['name']); ?>"
+                                    data-email="<?php echo htmlspecialchars($student['email']); ?>"
+                                    data-course="<?php echo htmlspecialchars($student['course']); ?>"
+                                    data-department="<?php echo htmlspecialchars($student['department']); ?>"
+                                    data-scholarship-type="<?php echo htmlspecialchars($student['scholarship_type']); ?>"
+                                    data-hk-duty-status="<?php echo htmlspecialchars($student['hk_duty_status']); ?>"
+                                    data-year-level="<?php echo htmlspecialchars($student['year_level']); ?>">
+                                    <img src="../assets/image/pen-icon.svg" alt="edit">
+                                    </a>
+                                    
+                                    <a href="?delete=<?php echo $student['id']; ?>" 
+                                    class="btn delete-btn"
+                                    onclick="return confirm('Are you sure?')">
+                                    <img src="../assets/image/trash-icon.svg" alt="delete">
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>

@@ -200,7 +200,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <label for="password"><i class="fas fa-lock"></i> Password:</label>
                             <div class="password-container">
                                 <input type="password" name="password" id="password" placeholder="Enter password" required>
-                                <img src="../assets/image/eye-beauty.png" alt="Show Password" class="toggle-password" data-target="password">
+                                <img src="../assets/image/hide.png" alt="Show Password" class="toggle-password" data-target="password">
                             </div>
                         </div>
 
@@ -208,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <label for="confirm_password"><i class="fas fa-check-circle"></i> Confirm Password:</label>
                             <div class="password-container">
                                 <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm password" required>
-                                <img src="../assets/image/eye-beauty.png" alt="Show Password" class="toggle-password" data-target="confirm_password">
+                                <img src="../assets/image/hide.png" alt="Show Password" class="toggle-password" data-target="confirm_password">
                             </div>
                         </div>
                     </div>
@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
         icon.addEventListener('click', function() {
             let input = document.getElementById(this.dataset.target);
             input.type = input.type === "password" ? "text" : "password";
-            this.src = input.type === "password" ? "../assets/image/eye-beauty.png" : "../assets/image/hide.png";
+            this.src = input.type === "password" ? "../assets/image/hide.png" : "../assets/image/eye-beauty.png";
         });
     });
 

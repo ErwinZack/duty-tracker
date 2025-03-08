@@ -1201,8 +1201,32 @@ tbody tr:last-child td:last-child {
   margin: 16px 8px;
   box-sizing: border-box;
 }
+.table-icon{
+  display:flex;
+  align-items: center;
+  gap:7px;
+}
+.table-icon a{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+}
+.table-icon img{
+  width: 52px;
+  height: 35px;
+  transition: filter 0.3s ease-in-out;
+}
 
-/* Sortable header styles */
+.table-icon a.edit-btn:hover img{
+  filter: invert(31%) sepia(99%) saturate(703%) hue-rotate(90deg) brightness(100%) contrast(97%);
+}
+
+.table-icon a.delete-btn:hover img{
+  filter: invert(14%) sepia(99%) saturate(7497%) hue-rotate(1deg) brightness(102%) contrast(107%);
+}
+/*sortable header styles */
 .sortable {
   user-select: none;
 }
