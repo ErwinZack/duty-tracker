@@ -221,100 +221,88 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div id="toast-container"></div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.toggle-password').forEach(function (icon) {
-            icon.addEventListener('click', function () {
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.toggle-password').forEach(icon => {
+        icon.addEventListener('click', function() {
             let input = document.getElementById(this.dataset.target);
-            if (input.type === "password") {
-                input.type = "text";
-                this.src = "../assets/image/hide.png"; 
-            } else {
-                input.type = "password";
-                this.src = "../assets/image/eye-beauty.png"; 
-            }
+            input.type = input.type === "password" ? "text" : "password";
+            this.src = input.type === "password" ? "../assets/image/eye-beauty.png" : "../assets/image/hide.png";
         });
     });
-        const form = document.getElementById('studentRegistrationForm');
-        const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById('confirm_password');
-        const studentIdInput = document.getElementById('student_id');
-        const nameInput = document.getElementById('name'); 
 
-        let studentIdError = document.createElement('p');
-        studentIdError.style.color = 'red';
-        studentIdError.style.fontSize = '12px';
-        studentIdError.style.marginTop = '2px';
-        studentIdInput.parentNode.appendChild(studentIdError);
-        
-        let nameError = document.createElement('p'); 
-        nameError.style.color = 'red';
-        nameError.style.fontSize = '12px';
-        nameError.style.marginTop = '2px';
-        nameInput.parentNode.appendChild(nameError);
-        //digits and hyphens allowed
-        const studentIdPattern = /^03-\d{4}-\d{6}$/;
+    const form = document.getElementById('studentRegistrationForm');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm_password');
+    const studentIdInput = document.getElementById('student_id');
+    const nameInput = document.getElementById('name');
+    
+    const studentIdPattern = /^03-\d{4}-\d{6}$/;
+    const namePattern = /^[A-Za-z\s]+$/;
 
-        // student ID while typing
-        studentIdInput.addEventListener('input', function(){
-            const inputValue = studentIdInput.value;
+    function createErrorElement() {
+        let error = document.createElement('p');
+        error.style.color = 'red';
+        error.style.fontSize = '12px';
+        error.style.marginTop = '2px';
+        return error;
+    }
+    
+    let studentIdError = createErrorElement();
+    studentIdInput.parentNode.appendChild(studentIdError);
+    
+    let nameError = createErrorElement();
+    nameInput.parentNode.appendChild(nameError);
 
-            if (/[a-zA-Z]/.test(inputValue)){
-                studentIdError.textContent = '❌ Letters are not allowed! use only numbers and dashes.';
-            } else if (inputValue.length < 14){
-                studentIdError.textContent = ''; 
-            } else if (!studentIdPattern.test(inputValue)){
-                studentIdError.textContent = '❌ Invalid format! I.E 03-2324-031593';
-            } else {
-                studentIdError.textContent = ''; 
-            }
-        });
-        const namePattern = /^[A-Za-z\s]+$/;
-
-        nameInput.addEventListener('input', function(){
-            const inputValue = nameInput.value;
-            if (/[0-9]/.test(inputValue)){
-                nameError.textContent = '❌ Numbers are not allowed!';
-            } else if (inputValue.length < 3){
-                nameError.textContent = '❌ Name is too short!';
-            } else if (!namePattern.test(inputValue)){
-                nameError.textContent = '❌ Invalid format! Only letters and spaces are allowed.';
-            } else {
-                nameError.textContent = '';
-            }
-        });
-
-        form.addEventListener('submit', function(event){
-            let isValid = true;
-
-            if (passwordInput.value !== confirmPasswordInput.value){
-                event.preventDefault();
-                showToast("Passwords do not match!", "error");
-                isValid = false;
-            }
-
-            // Student ID final validation before submission
-            if (!studentIdPattern.test(studentIdInput.value)){
-                event.preventDefault();
-                showToast("Invalid Student ID format!", "error");
-                isValid = false;
-            }
-
-            if (!isValid) return;
-        });
-
-        // Server-side message handling
-        <?php if (!empty($message['text'])): ?>
-            showToast("<?= addslashes($message['text']) ?>", "<?= $message['type'] ?>");
-        <?php endif; ?>
+    studentIdInput.addEventListener('input', function() {
+        const inputValue = studentIdInput.value;
+        if (/[a-zA-Z]/.test(inputValue)) {
+            studentIdError.textContent = '❌ Letters are not allowed! Use only numbers and dashes.';
+        } else if (!studentIdPattern.test(inputValue) && inputValue.length >= 14) {
+            studentIdError.textContent = '❌ Invalid format! E.g., 03-2324-031593';
+        } else {
+            studentIdError.textContent = '';
+        }
     });
 
-    // Toast notification function
-    function showToast(message, type) {
+    nameInput.addEventListener('input', function() {
+        const inputValue = nameInput.value;
+        if (/[0-9]/.test(inputValue)) {
+            nameError.textContent = '❌ Numbers are not allowed!';
+        } else if (inputValue.length < 3) {
+            nameError.textContent = '❌ Name is too short!';
+        } else if (!namePattern.test(inputValue)) {
+            nameError.textContent = '❌ Invalid format! Only letters and spaces are allowed.';
+        } else {
+            nameError.textContent = '';
+        }
+    });
+
+    form.addEventListener('submit', function(event) {
+        let isValid = true;
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            showToast("Please make sure passwords match", "error");
+            isValid = false;
+        }
+        if (nameInput.value.length < 4) {
+        showToast("Name must be at least 4 characters long!", "error");
+        isValid = false;
+        }
+
+        if (!studentIdPattern.test(studentIdInput.value)) {
+            showToast("Invalid Student ID format!", "error");
+            isValid = false;
+        }
+        if (!isValid) event.preventDefault();
+    });
+
+    <?php if (!empty($message['text'])): ?>
+        showToast("<?= addslashes($message['text']) ?>", "<?= $message['type'] ?>");
+    <?php endif; ?>
+});
+
+function showToast(message, type) {
     const toastContainer = document.getElementById("toast-container");
-
-    // Remove any existing toasts
-    const existingToasts = document.querySelectorAll('.toast');
-    existingToasts.forEach(toast => toast.remove());
+    document.querySelectorAll('.toast').forEach(toast => toast.remove());
 
     const toast = document.createElement("div");
     toast.classList.add("toast", type);
@@ -325,15 +313,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <div class="toast-progress"></div>
     `;
-
+    
     toastContainer.appendChild(toast);
     toast.classList.add('show');
-
     setTimeout(() => {
         toast.classList.remove('show');
         setTimeout(() => toast.remove(), 500);
     }, 5000);
 }
+
 </script>
 
 </body>
