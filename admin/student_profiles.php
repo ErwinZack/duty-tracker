@@ -40,16 +40,15 @@ if (isset($_GET['delete'])) {
 
 <body>
     <div class="dashboard-container">
-        <!-- Match with approved_duties.php -->
 
         <?php include '../includes/sidebar.php'; ?>
 
         <main class="main-content">
             <!-- Match with approved_duties.php -->
             <header class="header-container">
-    <div class="header-left">
-        <h2><i class="fas fa-users"></i> Total Students</h2>
-    </div>
+                <div class="header-left">
+                    <h2><i class="fas fa-users"></i> Total Students</h2>
+                </div>
     
     <div class="header-right">
         <div class="search-sort-container">
@@ -114,10 +113,12 @@ if (isset($_GET['delete'])) {
                                     <img src="../assets/image/pen-icon.svg" alt="edit">
                                     </a>
                                     
-                                    <a href="?delete=<?php echo $student['id']; ?>" 
-                                    class="btn delete-btn"
-                                    onclick="return confirm('Are you sure?')">
-                                    <img src="../assets/image/trash-icon.svg" alt="delete">
+                                    <a href="#" 
+                                        class="btn delete-btn"
+                                        data-id="<?php echo $student['id']; ?>"
+                                        onclick="openDeleteModal(this)">
+                                        <img src="../assets/image/trash-icon.svg" alt="delete">
+                                        </a>
                                     </a>
                                 </div>
                             </td>
@@ -135,30 +136,75 @@ if (isset($_GET['delete'])) {
             <h2>Edit Student Profile</h2>
             <div id="modalMessage"></div>
             
-            <form id="editStudentForm">
+            <form id="editStudentForm" method="POST">
                 <input type="hidden" id="studentId" name="id">
 
-                <label>Name</label>
+                <label for="studentName"><i class="fas fa-user"></i>
+                &nbsp;Name</label>
                 <input type="text" id="studentName" name="name" placeholder="Name" required>
 
-                <label>Email</label>
-                <input type="email" id="studentEmail" name="email" placeholder="Email" required>
+                <label for="studentEmail"><i class="fas fa-envelope"></i>
+                &nbsp;Email</label>
+                <input type="email" id="studentEmail" name="email" placeho  lder="Email" required>
 
-                <label>Course</label>
-                <input type="text" id="studentCourse" name="course" placeholder="Course" required>
 
-                <label>Department</label>
-                <input type="text" id="studentDepartment" name="department" placeholder="Department" required>
+                <label for="student-course"><i class="fa-solid fa-graduation-cap"></i>
+                &nbsp;Course</label>
+                <select name="course" id="studentCourse" required>
+                    <option value="" disabled selected>Select Course</option>
+                    <option value="BSIT">BS Information Technology</option>
+                    <option value="BSCS">BS Computer Science</option>
+                    <option value="BSE">BS Education</option>
+                    <option value="BBA">BS Business Administration</option>
+                    <option value="BSCRIM">BS Criminology</option>
+                    <option value="BSA">BS Accountancy</option>
+                    <option value="BSN">BS Nursing</option>
+                    <option value="BSARCH">BS Architecture</option>
+                    <option value="BSCOE">BS Computer Engineering</option>
+                    <option value="BSEE">BS Electrical Engineering</option>
+                </select>
 
-                <label>Scholarship Type</label>
-                <input type="text" id="studentScholarshipType" name="scholarship_type" placeholder="Scholarship Type" required>
+                <label for="student-department"><i class="fas fa-building"></i>
+                &nbsp;Department</label>
+                <select name="department" id="studentDepartment"required>
+                <option value="" disabled selected>Select Department</option>
+                                <option value="CEA">CEA</option>
+                                <option value="CMA">CMA</option>
+                                <option value="CAHS">CAHS</option>
+                                <option value="CITE">CITE</option>
+                                <option value="CCJE">CCJE</option>
+                                <option value="CELA">CELA</option>
+                </select>
 
-                <label>HK Duty Status</label>
-                <input type="text" id="studentHKDutyStatus" name="hk_duty_status" placeholder="HK Duty Status" required>
+                <label for="student-scholarship"><i class="fas fa-award"></i>
+                &nbsp;Scholarship Type</label>
+                    <select name="scholarship_type" id="studentScholarshipType">
+                        <option value="" disabled selected>Select Scholarship Type</option>
+                        <option value="HK 25">HK 25</option>
+                        <option value="HK 50">HK 50</option>
+                        <option value="HK 75">HK 75</option>
+                    </select>
 
-                <label>Year Level</label>
-                <input type="text" id="studentYearLevel" name="year_level" placeholder="Year Level" required>
+                <label for="student-hkdutystatus"><i class="fas fa-tasks"></i>
+                &nbsp;HK Duty Status:</label>
+                    <select name="hk_duty_status" id="studentHKDutyStatus" required>
+                        <option value="" disabled selected>Select Duty Status</option>
+                        <option value="Module Distributor">Module Distributor</option>
+                        <option value="Student Facilitator">Student Facilitator</option>
+                        <option value="Library Assistant">Library Assistant</option>
+                        <option value="Admin Assistant">External Facilitator</option>
+                    </select>
 
+                <label for="student-yearLevel"><i class="fas fa-layer-group"></i>
+                &nbsp;Year Level:</label>
+                    <select name="year_level" id="studentYearLevel" required>
+                        <option value="" disabled selected>Select Year Level</option>
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                        <option value="5th Year">5th Year</option>
+                    </select>
                 <div class="buttons">
                     <button type="button" onclick="closeModal()">Cancel</button>
                     <button type="submit" class="approve-button">Update</button>
@@ -166,6 +212,24 @@ if (isset($_GET['delete'])) {
             </form>
         </div>
     </div>
+    
+    <!--delete modal -->
+
+    <div id="deleteConfirmModal" class="delete-modal">
+        <div class="delete-content">
+            <span class="close" onclick="closeDeleteConfirmModal()">&times;</span>
+            <h2>Confirm Action</h2>
+            <p>Are you sure you want to proceed?</p>
+            <form id="deleteConfirmForm" method="POST">
+                <input type="hidden" id="deleteItemId" name="id">
+                <div class="buttons">
+                    <button type="button" onclick="closeDeleteConfirmModal()">Cancel</button>
+                    <button type="submit" class="approve-button">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
     <script>
         // Get the modal and elements
@@ -209,6 +273,91 @@ document.getElementById("editStudentForm").onsubmit = function (e) {
         }, 1500);
     });
 };
+document.addEventListener("DOMContentLoaded", function () {
+    let form = document.getElementById("editStudentForm");
+    let updateButton = form.querySelector("button[type='submit']");
+    let inputs = form.querySelectorAll("input, select");
+
+    // Store original values when modal opens
+    let originalData = {};
+
+    document.querySelectorAll(".edit-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            originalData = {
+                name: this.dataset.name,
+                email: this.dataset.email,
+                course: this.dataset.course,
+                department: this.dataset.department,
+                scholarship_type: this.dataset.scholarshipType,
+                hk_duty_status: this.dataset.hkDutyStatus,
+                year_level: this.dataset.yearLevel,
+            };
+            updateButton.disabled = true; 
+        });
+    });
+
+    // Check for changes in form fields
+    inputs.forEach(input => {
+        input.addEventListener("input", function () {
+            let hasChanges = false;
+            for (let key in originalData) {
+                let formElement = document.querySelector(`[name='${key}']`);
+                if (formElement && formElement.value !== originalData[key]) {
+                    hasChanges = true;
+                    break;
+                }
+            }
+            updateButton.disabled = !hasChanges;
+        });
+    });
+});
+// Open Delete Confirmation Modal
+function openDeleteModal(button) {
+    let studentId = button.getAttribute("data-id");
+    document.getElementById("deleteItemId").value = studentId;
+    
+    let modal = document.getElementById("deleteConfirmModal");
+    if (modal) {
+        modal.style.display = "flex";
+    }
+}
+
+// Close Delete Modal Function
+function closeDeleteConfirmModal() {
+    let modal = document.getElementById("deleteConfirmModal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+// Handle Delete Form Submission
+document.getElementById("deleteConfirmForm").onsubmit = function (e) {
+    e.preventDefault();
+    let formData = new FormData(this);
+
+    fetch("delete_student.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        if (data.trim() === "success") {
+            closeDeleteConfirmModal(); // Close modal on success
+            location.reload();  // Refresh the table
+        } else {
+            alert("Error deleting student.");
+        }
+    })
+    .catch(error => console.error("Error:", error));
+};
+
+// Ensure modal is hidden on page load
+document.addEventListener("DOMContentLoaded", function () {
+    let modal = document.getElementById("deleteConfirmModal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+});
 
     </script>
 

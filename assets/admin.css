@@ -1477,7 +1477,6 @@ button img {
 }
 
 /*edit student profilemodal*/
-/* Edit Modal Styles */
 .edit-modal {
   display: none;
   position: fixed;
@@ -1530,22 +1529,26 @@ button img {
 
 #editStudentForm {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto 1fr;
   gap: 10px;
+  align-items: center;
+  width: 100%;
 }
 
 #editStudentForm label {
-  font-weight: 500;
-  font-size: 0.85rem;
+  text-align: right;
+  padding-right: 10px;
+  font-weight: bold;
 }
 
-#editStudentForm input {
+#editStudentForm input,
+#editStudentForm select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
+  padding: 8px;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 0.9rem;
 }
+
 
 .full-width {
   grid-column: span 2;
@@ -1586,6 +1589,96 @@ button img {
   color: #2d3748;
   background-color: #f7fafc;
 }
+/* Delete Modal Background */
+.delete-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.5); /* Overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal Box */
+.delete-content {
+  background: white;
+  padding: 20px;
+  width: 350px;
+  max-width: 90%;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Close Button */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.buttons button {
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.buttons .approve-button {
+  background: red;
+  color: white;
+}
+
+.buttons button:hover {
+  opacity: 0.8;
+}
+
+button:disabled {
+  opacity: 0.5; 
+  cursor: not-allowed;
+  background-color: #cccccc !important; 
+  color: #666666 !important; 
+  border: 1px solid #bbbbbb !important;
+}
+.message-error{
+  color: red;
+  background-color: #f9e6e6;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.success-message {
+  background-color: #198754;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px; 
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+
 
 @media (max-width: 600px) {
   #editStudentForm {

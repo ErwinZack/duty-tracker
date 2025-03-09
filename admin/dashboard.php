@@ -120,7 +120,7 @@ $rejected_logs = $stmt->fetch(PDO::FETCH_ASSOC)['rejected_logs'];
                     <p>Total Students</p>
                 </div>
             </a>
-            <a href="pending_duties.php" class="stat-card yellow">
+            <a href="approve_duty.php" class="stat-card yellow">
                 <div class="icon-container">
                     <i class="fa-solid fa-hourglass-half"></i>
                 </div>
