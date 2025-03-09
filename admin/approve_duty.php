@@ -137,25 +137,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['log_id'], $_POST['acti
                 <h2><i class="fas fa-users"></i> Approve Duty Logs</h2>
             </div>
             
-            <div class="header-right">
-                <div class="search-sort-container">
-                    <div class="search-container">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Search...">
-                    </div>
-                    
-                    <div class="dropdown">
-                        <img src="../assets/image/sort-icon.jpg" alt="Sort" onclick="toggleDropdown()">
-                        <div class="dropdown-content" id="dropdown">
-                            <select id="sortSelect">
-                                <option value="id">ID</option>
-                                <option value="student_id">Student ID</option>
-                                <option value="name">Name</option>
-                            </select>
+                <div class="header-right">
+                    <div class="search-sort-container">
+                        
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Search...">
+                        </div>
+
+                        <div class="dropdown">
+                            <img src="../assets/image/sort-icon.jpg" alt="Sort" onclick="toggleDropdown()">
+                            <div class="dropdown-content" id="dropdown">
+                                <select id="sortSelect">
+                                    <option value="id">ID</option>
+                                    <option value="student_id">Student ID</option>
+                                    <option value="name">Name</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </header>
 
         <?php if (!empty($error)): ?>

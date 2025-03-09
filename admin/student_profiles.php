@@ -44,36 +44,36 @@ if (isset($_GET['delete'])) {
         <?php include '../includes/sidebar.php'; ?>
 
         <main class="main-content">
-            <!-- Match with approved_duties.php -->
+
             <header class="header-container">
                 <div class="header-left">
-                    <h2><i class="fas fa-users"></i> Total Students</h2>
+                    <h2><i class="fas fa-users"></i> Student Profile</h2>
                 </div>
-    
-    <div class="header-right">
-        <div class="search-sort-container">
-            <div class="search-container">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Search...">
-            </div>
-            
-            <div class="dropdown">
-                <img src="../assets/image/sort-icon.jpg" alt="Sort" onclick="toggleDropdown()">
-                <div class="dropdown-content" id="dropdown">
-                    <select id="sortSelect">
-                        <option value="id">ID</option>
-                        <option value="student_id">Student ID</option>
-                        <option value="name">Name</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
 
+                <div class="header-right">
+                    <div class="search-sort-container">
+
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Search...">
+                        </div>
+
+                        <div class="dropdown">
+                            <img src="../assets/image/sort-icon.jpg" alt="Sort" onclick="toggleDropdown()">
+                            <div class="dropdown-content" id="dropdown">
+                                <select id="sortSelect">
+                                    <option value="id">ID</option>
+                                    <option value="student_id">Student ID</option>
+                                    <option value="name">Name</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
 
             <section class="table-container">
-                <table>
+                <table id="studentsTable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -358,7 +358,32 @@ document.addEventListener("DOMContentLoaded", function () {
         modal.style.display = "none";
     }
 });
+// Function to toggle dropdown
+    function toggleDropdown() {
+        document.getElementById('dropdown').classList.toggle('show');
+    }
 
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        const searchValue = this.value.toLowerCase();
+        const table = document.getElementById('studentsTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) {
+            let found = false;
+            const cells = rows[i].getElementsByTagName('td');
+            
+            for (let j = 0; j < cells.length; j++) {
+                const cellText = cells[j].textContent.toLowerCase();
+                if (cellText.indexOf(searchValue) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+            
+            rows[i].style.display = found ? '' : 'none';
+        }
+    });
     </script>
 
 </body>

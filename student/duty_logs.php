@@ -23,6 +23,17 @@ $duty_logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 if (!$duty_logs) {
     $error = "No duty logs found.";
 }
+$total_hours = 0; // Initialize total hours variable
+
+foreach ($duty_logs as $log) {
+    if ($log['time_out']) {
+        $time_in = strtotime($log['time_in']);
+        $time_out = strtotime($log['time_out']);
+        $hours = round(($time_out - $time_in) / 3600, 2); // Convert seconds to hours
+        $total_hours += $hours; // Add to total
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -40,6 +51,7 @@ if (!$duty_logs) {
     <div class="duty-logs-container">
         <header>
             <h2>Your Duty Logs</h2>
+            <p>Total Hours Worked: <strong><?php echo $total_hours; ?></strong></p> 
             <a href="dashboard.php">Back to Dashboard</a>
         </header>
 
