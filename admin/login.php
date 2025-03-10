@@ -2,31 +2,34 @@
 session_start();
 require_once '../config/database.php';
 
-$error = "";
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Capture form data
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
 
     if (empty($email) || empty($password)) {
-        $error = "Both email and password are required.";
+        $_SESSION['error'] = "Both email and password are required.";
     } else {
-        // Use the correct table name 'admin' instead of 'admins'
         $stmt = $pdo->prepare("SELECT * FROM admin WHERE email = ?");
         $stmt->execute([$email]);
-
         $admin = $stmt->fetch();
 
-        if ($admin && password_verify($password, $admin['password'])) {
-            $_SESSION['admin_id'] = $admin['id'];  // Store admin ID in session
-            $_SESSION['admin_name'] = $admin['name'];  // Store admin name in session
-            header("Location: dashboard.php");  // Redirect to dashboard after login
-            exit();
+        if ($admin) {
+            if (password_verify($password, $admin['password'])) {
+                $_SESSION['admin_id'] = $admin['id'];
+                $_SESSION['admin_name'] = $admin['name'];
+                header("Location: dashboard.php");
+                exit();
+            } else {
+                $_SESSION['error'] = "Incorrect password.";
+            }
         } else {
-            $error = "Invalid email or password.";
+            $_SESSION['error'] = "Email not found.";
         }
     }
+
+    // Redirect back to login page to display errors
+    header("Location: login.php");
+    exit();
 }
 ?>
 
@@ -64,6 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <?php unset($_SESSION['error']); // Clear error after displaying ?>
                 <?php endif; ?>
+
 
                 <label for="email">Email</label>
                 <div class="email">
