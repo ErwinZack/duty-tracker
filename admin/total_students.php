@@ -19,6 +19,7 @@ FROM students s
 LEFT JOIN duty_logs dl 
     ON s.student_id = dl.student_id 
     AND dl.time_out IS NOT NULL
+    AND dl.status = 'Approved'
 GROUP BY s.id, s.student_id, s.name, s.email;
 ");
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
