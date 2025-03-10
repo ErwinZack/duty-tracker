@@ -196,7 +196,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['log_id'], $_POST['acti
         <td><?php echo date('h:i A', strtotime($log['time_in'])); ?></td>
         <td><?php echo $log['time_out'] ? date('h:i A', strtotime($log['time_out'])) : 'N/A'; ?></td>
         <td><?php echo number_format($log['hours_worked'], 2); ?> hrs</td>
-        <td><?php echo number_format($log['total_hours'], 2); ?> hrs</td>
+        <td>
+            <?php 
+            // Fetch total approved hours for the student
+            $stmt_approved_hours = $pdo->prepare("
+                SELECT IFNULL(SUM(hours_worked), 0) 
+                FROM duty_logs 
+                WHERE student_id = ? AND status = 'Approved'
+            ");
+            $stmt_approved_hours->execute([$log['student_id']]);
+            $approved_hours = $stmt_approved_hours->fetchColumn();
+            
+            echo number_format($approved_hours, 2) . " hrs"; 
+            ?>
+        </td>
+
         <td class="<?php echo $log['status'] == 'Pending' ? 'status-pending' : ''; ?>">
             <?php echo htmlspecialchars($log['status']); ?>
         </td>

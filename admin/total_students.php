@@ -7,13 +7,25 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
-$stmt = $pdo->query("SELECT id, student_id, name, email FROM students");
+$stmt = $pdo->query("
+SELECT s.id, s.student_id, s.name, s.email, 
+       IFNULL(SUM(
+           TIMESTAMPDIFF(SECOND, 
+               STR_TO_DATE(CONCAT(dl.duty_date, ' ', dl.time_in), '%Y-%m-%d %H:%i:%s'), 
+               STR_TO_DATE(CONCAT(dl.duty_date, ' ', dl.time_out), '%Y-%m-%d %H:%i:%s')
+           ) / 3600
+       ), 0) AS total_hours
+FROM students s
+LEFT JOIN duty_logs dl 
+    ON s.student_id = dl.student_id 
+    AND dl.time_out IS NOT NULL
+GROUP BY s.id, s.student_id, s.name, s.email;
+");
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +37,6 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
 <div class="dashboard-container">
-
 <?php include '../includes/sidebar.php'?>
 
 <!-- Main Content -->
@@ -56,89 +67,96 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </header>
 
-    <section class="table-container">
-        <div class="table-content">
-            <table id="studentsTable">
-                <thead>
-                    <tr>
-                        <th class="sortable" data-column="id">ID</th>
-                        <th class="sortable" data-column="student_id">
-                        Student ID</th>
-                        <th class="sortable" data-column="name">Name </th>
-                        <th class="sortable" data-column="email">Email </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($students as $student): ?>
-                    <tr>
-                        <td data-label="ID"><?php echo htmlspecialchars($student['id']); ?></td>
-                        <td data-label="Student ID"><?php echo htmlspecialchars($student['student_id']); ?></td>
-                        <td data-label="Name"><?php echo htmlspecialchars($student['name']); ?></td>
-                        <td data-label="Email"><?php echo htmlspecialchars($student['email']); ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    </section>
+<section class="table-container">
+    <div class="table-content">
+        <table id="studentsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Rendered Hours</th>
+                    <th>View Logs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($students as $student): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($student['id']); ?></td>
+                    <td><?php echo htmlspecialchars($student['student_id']); ?></td>
+                    <td><?php echo htmlspecialchars($student['name']); ?></td>
+                    <td><?php echo htmlspecialchars($student['email']); ?></td>
+                    <td>
+                        <?php echo isset($student['total_hours']) ? number_format($student['total_hours'], 2) : '0.00'; ?>
+                    </td>
+                    <td>
+                    <button class="view-logs-btn">
+                        <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="blue">
+                            <path d="M8 2C4 2 1 6 1 6s3 4 7 4 7-4 7-4-3-4-7-4Zm0 6.5A2.5 2.5 0 1 1 8 3a2.5 2.5 0 0 1 0 5.5Z"/>
+                        </svg>
+                    </button>
+
+
+
+                    </td>   
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</section>
 </main>
 </div>
 
 <script>
 function toggleDropdown() {
-const dropdown = document.getElementById('dropdown');
-if (dropdown.style.display === 'block') {
-dropdown.style.display = 'none';
-} else {
-dropdown.style.display = 'block';
-}
+    const dropdown = document.getElementById('dropdown');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-const table = document.getElementById('studentsTable');
-const tbody = table.querySelector('tbody');
-const rows = Array.from(tbody.querySelectorAll('tr'));
-const sortSelect = document.getElementById('sortSelect');
-const searchInput = document.getElementById('searchInput');
+    const table = document.getElementById('studentsTable');
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    const sortSelect = document.getElementById('sortSelect');
+    const searchInput = document.getElementById('searchInput');
 
-// Close dropdown when clicking outside
-document.addEventListener('click', function(event) {
-const dropdown = document.getElementById('dropdown');
-const sortIcon = document.querySelector('.dropdown img');
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('dropdown');
+        const sortIcon = document.querySelector('.dropdown img');
 
-if (event.target !== sortIcon && !dropdown.contains(event.target)) {
-    dropdown.style.display = 'none';
-}
-});
+        if (event.target !== sortIcon && !dropdown.contains(event.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
 
-sortSelect.addEventListener('change', function() {
-const column = this.value;
-if (!column) return;
+    sortSelect.addEventListener('change', function() {
+        const column = this.value;
+        if (!column) return;
 
-const columnIndex = { id: 0, student_id: 1, name: 2 }[column];
+        const columnIndex = { id: 0, student_id: 1, name: 2 }[column];
 
-rows.sort((a, b) => {
-    const aValue = a.children[columnIndex].textContent.trim();
-    const bValue = b.children[columnIndex].textContent.trim();
-    return aValue.localeCompare(bValue, undefined, { numeric: true });
-});
+        rows.sort((a, b) => {
+            const aValue = a.children[columnIndex].textContent.trim();
+            const bValue = b.children[columnIndex].textContent.trim();
+            return aValue.localeCompare(bValue, undefined, { numeric: true });
+        });
 
-rows.forEach(row => tbody.appendChild(row));
+        rows.forEach(row => tbody.appendChild(row));
+        document.getElementById('dropdown').style.display = 'none';
+    });
 
-document.getElementById('dropdown').style.display = 'none';
-});
-
-searchInput.addEventListener('input', function() {
-const searchTerm = this.value.toLowerCase();
-
-rows.forEach(row => {
-    const text = row.textContent.toLowerCase();
-    row.style.display = text.includes(searchTerm) ? '' : 'none';
-});
-});
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    });
 });
 </script>
 
 </body>
-
 </html>
