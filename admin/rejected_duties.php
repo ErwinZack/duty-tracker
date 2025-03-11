@@ -78,17 +78,15 @@ $rejectedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </thead>
                     <tbody>
                         <?php foreach ($rejectedDuties as $log): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($log['student_id']); ?></td>
-                            <td><?php echo htmlspecialchars($log['name']); ?></td>
-                            <td><?php echo htmlspecialchars($log['duty_date']); ?></td>
-                            <td><?php echo htmlspecialchars($log['time_in']); ?></td>
-                            <td><?php echo htmlspecialchars($log['time_out']); ?></td>
-                            <td><?php echo htmlspecialchars($log['hours_worked']); ?></td>
-                            <td><?php echo htmlspecialchars($log['total_hours']); ?></td>
-
-                            <!-- Keeping approved_at as per DB -->
-                        </tr>
+                            <tr>
+                                <td><?php echo htmlspecialchars($log['student_id']); ?></td>
+                                <td><?php echo htmlspecialchars($log['name']); ?></td>
+                                <td><?php echo htmlspecialchars($log['duty_date']); ?></td>
+                                <td><?php echo date('h:i A', strtotime($log['time_in'])); ?></td> 
+                                <td><?php echo ($log['time_out']) ? date('h:i A', strtotime($log['time_out'])) : 'N/A'; ?></td> 
+                                <td><?php echo htmlspecialchars($log['hours_worked']); ?></td>
+                                <td><?php echo htmlspecialchars($log['total_hours']); ?></td>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>

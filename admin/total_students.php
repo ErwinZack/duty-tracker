@@ -92,14 +92,12 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <?php echo isset($student['total_hours']) ? number_format($student['total_hours'], 2) : '0.00'; ?>
                     </td>
                     <td>
-                    <button class="view-logs-btn">
-                        <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="blue">
-                            <path d="M8 2C4 2 1 6 1 6s3 4 7 4 7-4 7-4-3-4-7-4Zm0 6.5A2.5 2.5 0 1 1 8 3a2.5 2.5 0 0 1 0 5.5Z"/>
-                        </svg>
-                    </button>
-
-
-
+                        <a href="viewstudent_log.php?student_id=<?php echo htmlspecialchars($student['student_id']); ?>" class="view-logs-btn">
+                            
+                            <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="blue">
+                                <path d="M8 2C4 2 1 6 1 6s3 4 7 4 7-4 7-4-3-4-7-4Zm0 6.5A2.5 2.5 0 1 1 8 3a2.5 2.5 0 0 1 0 5.5Z"/>
+                            </svg>
+                        </a>
                     </td>   
                 </tr>
                 <?php endforeach; ?>

@@ -165,7 +165,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['log_id'], $_POST['acti
         <p class="success"><?php echo $success; ?></p>
         <?php endif; ?>
         <section class="table-container">
-        <div class="table-content">
         <table id="studentsTable">
             <thead>
                 <tr>
@@ -182,12 +181,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['log_id'], $_POST['acti
                 </tr>
             </thead>
             <tbody>
-    <?php if (empty($pending_logs)): ?>
-    <tr>
-        <td colspan="10">No pending duty logs.</td>
-    </tr>
-    <?php else: ?>
-    <?php foreach ($pending_logs as $log): ?>
+            <?php if (empty($pending_logs)): ?>
+            <tr>
+                <td colspan="10">No pending duty logs.</td>
+            </tr>
+            <?php else: ?>
+            <?php foreach ($pending_logs as $log): ?>
     <tr>
         <td><?php echo $log['id']; ?></td>
         <td><?php echo htmlspecialchars($log['student_name']); ?></td>
@@ -219,7 +218,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['log_id'], $_POST['acti
                 echo htmlspecialchars(json_encode([
                     'id' => $log['id'],
                     'date' => date('Y-m-d', strtotime($log['duty_date'])),
-                    'timeIn' => date('H:i', strtotime($log['time_in'])),
+                    'timeIn' => date('h:i', strtotime($log['time_in'])),
                     'timeOut' => $log['time_out'] ? date('H:i', strtotime($log['time_out'])) : '',
                     'student' => $log['student_name'],
                     'student_id' => $log['student_id']
@@ -233,7 +232,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['log_id'], $_POST['acti
     <?php endif; ?>
 </tbody>
         </table>
-        </div>
         </section>
     </main>
 </div>
