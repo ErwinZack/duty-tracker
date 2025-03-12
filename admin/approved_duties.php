@@ -91,13 +91,10 @@ $approvedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?php echo date('h:i A', strtotime($log['time_in'])); ?></td>
                             <td><?php echo date('h:i A', strtotime($log['time_out'])); ?></td>
                             <td><?php echo number_format($log['hours_worked'], 2); ?> hrs</td>
-                            <td class="<?php echo ($log['status'] == 'Approved') ? 'status-approved' : ''; ?>">
+                            <td class="<?php echo $log['status'] == 'Approved' ? 
+                                'status-pending-approved' : ''; ?>">
                                 <?php 
-                                    if ($log['status'] == 'Approved') {
-                                        echo '<i class="fa-solid fa-times-circle"></i> Approved';
-                                    } else {
-                                        echo htmlspecialchars($log['status']);
-                                    }
+                                    echo ($log['status'] == 'Approved') ? '<i class="fa-solid fa-check-circle"></i> Approved' : htmlspecialchars($log['status']); 
                                 ?>
                             </td>
                             <td>

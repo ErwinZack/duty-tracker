@@ -86,14 +86,11 @@ $rejectedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td><?php echo date('h:i A', strtotime($log['time_in'])); ?></td> 
                                 <td><?php echo ($log['time_out']) ? date('h:i A', strtotime($log['time_out'])) : 'N/A'; ?></td> 
                                 <td><?php echo htmlspecialchars($log['hours_worked']); ?></td>
-                                <td class="<?php echo ($log['status'] == 'Rejected') ? 'status-rejected' : ''; ?>">
-                                <?php 
-                                    if ($log['status'] == 'Rejected') {
-                                        echo '<i class="fa-solid fa-times-circle"></i> Rejected';
-                                    } else {
-                                        echo htmlspecialchars($log['status']);
-                                    }
-                                ?>
+                                <td class="<?php echo $log['status'] == 'Rejected' ? 
+                                    'status-pending-rejected' : ''; ?>">
+                                    <?php 
+                                        echo ($log['status'] == 'Rejected') ? '<i class="fa-solid fa-times-circle"></i> Rejected' : htmlspecialchars($log['status']); 
+                                    ?>
                                 </td>
                                 <td>
                                 <form method="post" action="retrieve_duty.php" class="retrieve-form">

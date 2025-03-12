@@ -1253,6 +1253,30 @@ tbody tr:last-child td:last-child {
   min-width: 100px;
 }
 .status-pending-approved {
+  margin-top: 12px;
+  background-color: #28a745; 
+  color: white;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-align: center;
+  display: inline-block;
+  font-size: 14px;
+  min-width: 100px;
+}
+.status-pending-rejected{
+  margin-top: 12px;
+  background-color: #dc3545; 
+  color: white;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-align: center;
+  display: inline-block;
+  font-size: 14px;
+  min-width: 100px;
+}
+.status-pending-approval {
   margin-top: 17px;
   background-color: #ffcc00; 
   color: #000;
@@ -1264,7 +1288,6 @@ tbody tr:last-child td:last-child {
   font-size: 14px;
   min-width: 100px;
 }
-
 .table-icon{
   display:flex;
   align-items: center;

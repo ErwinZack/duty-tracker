@@ -210,7 +210,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['log_id'], $_POST['acti
             ?>
         </td>
 
-        <td class="<?php echo $log['status'] == 'Pending' ? 'status-pending-approved' : ''; ?>">
+        <td class="<?php echo $log['status'] == 'Pending' ? 'status-pending-approval' : ''; ?>">
             <?php 
                 echo ($log['status'] == 'Pending') ? '<i class="fa-solid fa-clock"></i> Pending' : htmlspecialchars($log['status']); 
             ?>
