@@ -43,7 +43,7 @@ CREATE TABLE duty_logs (
     log_date DATE DEFAULT CURRENT_TIMESTAMP,  -- System-generated log date
     hours_worked DECIMAL(5,2) NOT NULL,  -- Hours worked in this session
     total_hours DECIMAL(10,2) NOT NULL DEFAULT 0.00,  -- Running total of student's hours
-    FOREIGN KEY (admin_id) REFERENCES admin(id) ON DELETE SET NULL
+    FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE
 );
 
 -- Notifications Table
