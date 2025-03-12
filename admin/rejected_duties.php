@@ -9,12 +9,13 @@ if (!isset($_SESSION['admin_id'])) {
 
 // Fetch rejected duty logs
 $stmt = $pdo->query("
-    SELECT d.id, s.student_id, s.name, s.course, s.department, d.duty_date, d.time_in, d.time_out, d.hours_worked, d.total_hours, d.approved_at
+    SELECT d.id, s.student_id, s.name, s.course, s.department, d.duty_date, d.time_in, d.time_out, d.hours_worked, d.status
     FROM duty_logs d
     JOIN students s ON d.student_id = s.student_id
     WHERE d.status = 'Rejected'
     ORDER BY d.approved_at DESC
 ");
+
 $rejectedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -72,7 +73,7 @@ $rejectedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <th>Time In</th>
                             <th>Time Out</th>
                             <th>Hours Worked</th>
-                            <th>Total Hours</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -85,7 +86,15 @@ $rejectedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td><?php echo date('h:i A', strtotime($log['time_in'])); ?></td> 
                                 <td><?php echo ($log['time_out']) ? date('h:i A', strtotime($log['time_out'])) : 'N/A'; ?></td> 
                                 <td><?php echo htmlspecialchars($log['hours_worked']); ?></td>
-                                <td><?php echo htmlspecialchars($log['total_hours']); ?></td>
+                                <td class="<?php echo ($log['status'] == 'Rejected') ? 'status-rejected' : ''; ?>">
+                                <?php 
+                                    if ($log['status'] == 'Rejected') {
+                                        echo '<i class="fa-solid fa-times-circle"></i> Rejected';
+                                    } else {
+                                        echo htmlspecialchars($log['status']);
+                                    }
+                                ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

@@ -1215,18 +1215,56 @@ tbody tr:last-child td:last-child {
   margin: 0 auto;
 }
 .status-pending {
-  background-color: #ffc107;
-  border-radius: 20px;
+  margin-top: 7px;
+  background-color: #ffcc00; /* Bright Yellow */
+  color: #000;
   font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 20px;
   text-align: center;
-  padding: 5px 10px;
-  width: fit-content;
-  margin: 16px 8px;
-  box-sizing: border-box;
+  display: inline-block;
+  font-size: 14px;
+  min-width: 100px;
 }
+
+.status-approved {
+  margin-top: 7px;
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-align: center;
+  display: inline-block;
+  font-size: 14px;
+  min-width: 100px;
+}
+
+.status-rejected {
+  margin-top: 7px;
+  background-color: #dc3545;
+  color: white;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-align: center;
+  display: inline-block;
+  font-size: 14px;
+  min-width: 100px;
+}
+.status-pending-approved {
+  margin-top: 17px;
+  background-color: #ffcc00; 
+  color: #000;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-align: center;
+  display: inline-block;
+  font-size: 14px;
+  min-width: 100px;
+}
+
 .table-icon{
   display:flex;
   align-items: center;
@@ -1370,6 +1408,16 @@ tbody tr:last-child td:last-child {
     border-bottom: 0;
   }
   .status-pending {
+    margin-top: 0;
+    padding: 10px;
+    font-size: 14px;
+  }
+  .status-approved {
+    margin-top: 0;
+    padding: 10px;
+    font-size: 14px;
+  }
+  .status-rejected {
     margin-top: 0;
     padding: 10px;
     font-size: 14px;

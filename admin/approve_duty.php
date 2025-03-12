@@ -210,9 +210,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['log_id'], $_POST['acti
             ?>
         </td>
 
-        <td class="<?php echo $log['status'] == 'Pending' ? 'status-pending' : ''; ?>">
-            <?php echo htmlspecialchars($log['status']); ?>
+        <td class="<?php echo $log['status'] == 'Pending' ? 'status-pending-approved' : ''; ?>">
+            <?php 
+                echo ($log['status'] == 'Pending') ? '<i class="fa-solid fa-clock"></i> Pending' : htmlspecialchars($log['status']); 
+            ?>
         </td>
+
         <td>
             <button type="button" onclick="openModal(<?php 
                 echo htmlspecialchars(json_encode([
