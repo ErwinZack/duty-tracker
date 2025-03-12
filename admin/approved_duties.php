@@ -11,7 +11,7 @@ if (!isset($_SESSION['admin_id'])) {
 $stmt = $pdo->query("
     SELECT d.id, s.student_id, s.name, s.course, s.department, 
            d.duty_date, d.time_in, d.time_out, 
-           d.hours_worked, d.total_hours, d.approved_at
+           d.hours_worked, d.total_hours, d.approved_at,  d.status
     FROM duty_logs d
     JOIN students s ON d.student_id = s.student_id
     WHERE d.status = 'Approved'
@@ -38,7 +38,7 @@ $approvedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="dashboard-container">
 
         <?php include '../includes/sidebar.php'; ?>
-
+        
         <!-- Main Content -->
         <main class="main-content">
         <header class="header-container">
@@ -78,6 +78,8 @@ $approvedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <th>Time In</th>
                             <th>Time Out</th>
                             <th>Hours Worked</th>
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,6 +91,23 @@ $approvedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?php echo date('h:i A', strtotime($log['time_in'])); ?></td>
                             <td><?php echo date('h:i A', strtotime($log['time_out'])); ?></td>
                             <td><?php echo number_format($log['hours_worked'], 2); ?> hrs</td>
+                            <td class="<?php echo ($log['status'] == 'Approved') ? 'status-approved' : ''; ?>">
+                                <?php 
+                                    if ($log['status'] == 'Approved') {
+                                        echo '<i class="fa-solid fa-times-circle"></i> Approved';
+                                    } else {
+                                        echo htmlspecialchars($log['status']);
+                                    }
+                                ?>
+                            </td>
+                            <td>
+                                <form method="post" action="retrieve_duty.php" class="retrieve-form">
+                                    <input type="hidden" name="duty_id" value="<?php echo $log['id']; ?>">
+                                    <button type="submit" class="retrieve-btn">
+                                        <i class="fas fa-undo"></i> Retrieve
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

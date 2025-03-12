@@ -1308,6 +1308,30 @@ tbody tr:last-child td:last-child {
   fill: rgb(1, 65, 95);
   transform: scale(1.1);
 }
+/* Retrieve button styling */
+.retrieve-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.retrieve-btn:hover {
+  background-color: #45a049;
+}
+
+.retrieve-btn i {
+  margin-right: 5px;
+}
+
+.retrieve-form {
+  display: inline-block;
+  margin: 0;
+}
 
 
 /*sortable header styles */

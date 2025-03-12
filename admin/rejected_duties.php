@@ -95,6 +95,14 @@ $rejectedDuties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     }
                                 ?>
                                 </td>
+                                <td>
+                                <form method="post" action="retrieve_duty.php" class="retrieve-form">
+                                    <input type="hidden" name="duty_id" value="<?php echo $log['id']; ?>">
+                                    <button type="submit" class="retrieve-btn">
+                                        <i class="fas fa-undo"></i> Retrieve
+                                    </button>
+                                </form>
+                            </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
