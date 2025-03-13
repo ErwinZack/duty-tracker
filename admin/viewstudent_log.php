@@ -24,7 +24,7 @@ $duty_logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $total_hours = 0;
 foreach ($duty_logs as $log) {
-    if ($log['time_out']) {
+    if ($log['status'] === 'Approved' && $log['time_out']){
         $time_in = strtotime($log['time_in']);
         $time_out = strtotime($log['time_out']);
         $hours = round(($time_out - $time_in) / 3600, 2);
