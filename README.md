@@ -53,3 +53,4 @@ A digital solution for tracking and managing student duty hours, promoting paper
 
 1. Clone the repository:
 ```bash
+https://github.com/ErwinZack/duty-tracker/tree/main
