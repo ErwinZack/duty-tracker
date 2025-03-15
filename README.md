@@ -38,7 +38,7 @@ A digital solution for tracking and managing student duty hours, promoting paper
 - **Mobile**: Kotlin (Android)
 
 ### Backend
-- Laravel (PHP Framework)
+- PHP 
 - REST API & WebSocket
 
 ### Database
