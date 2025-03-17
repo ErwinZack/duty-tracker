@@ -5,7 +5,7 @@
 
 A digital solution for tracking and managing student duty hours, promoting paperless scholarship compliance.
 
-![HK DUTY TRACKER](https://www.figma.com/design/dXzZsRQ9ESctfWelpcYWX4/WEB-UI?node-id=813-52&t=82mObIo7jMpzJdYO-0)
+![HK DUTY TRACKER](assets/starting.png)
 
 ## 📖 Table of Contents
 - [Features](#-features)
